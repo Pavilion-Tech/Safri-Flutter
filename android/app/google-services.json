@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "523296260220",
+    "project_id": "safri-c7aa3",
+    "storage_bucket": "safri-c7aa3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523296260220:android:3696e2bef3753e3cbc09f9",
+        "android_client_info": {
+          "package_name": "com.safri.pavilion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4usgWjlEMpzdckL6WO8shs9Gpvo1pkJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
