@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:safri/layout/cubit/cubit.dart';
+import 'package:safri/shared/styles/colors.dart';
 
 import '../../../shared/images/images.dart';
 
@@ -77,7 +78,7 @@ class _SelectServiceTypeState extends State<SelectServiceType> {
                     color: Color(0xffB3B3B3).withOpacity(0.3)
                 ),child: Padding(
                   padding: const EdgeInsets.all(20.0),
-                  child: SvgPicture.asset(image,width: 60,color: widget.currentIndex == index?Color(0xffED285D): Color(0xffB3B3B3),),
+                  child: SvgPicture.asset(image,width: 60,color: widget.currentIndex == index?defaultColor: Color(0xffB3B3B3),),
                 )),
             Text(
               tr(title),
