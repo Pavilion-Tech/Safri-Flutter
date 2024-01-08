@@ -120,6 +120,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         emit(HomeCategoryWrongState());
       }
     }).catchError((e){
+      showToast(msg: tr('server_error'),toastState: false);
       emit(HomeCategoryErrorState());
     });
   }
@@ -169,7 +170,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(ProviderCategoryErrorState());
     });
   }
@@ -223,7 +224,7 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
       }
     }).catchError((e){
       print(e.toString());
-      // showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(ProviderCategorySearchErrorState());
     });
   }

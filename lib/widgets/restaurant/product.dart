@@ -11,7 +11,7 @@ import '../item_shared/image_net.dart';
 class Product extends StatelessWidget {
   Product(this.productData,this.isClosed);
 
-  ProductData productData;
+  ProductData? productData;
 
   bool isClosed;
 
@@ -38,7 +38,7 @@ class Product extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadiusDirectional.circular(15),
               ),
-              child: ImageNet(image:productData.mainImage??'',fit: BoxFit.cover,),
+              child: ImageNet(image:productData?.mainImage??'',fit: BoxFit.cover,),
             ),
             const SizedBox(width: 5,),
             Expanded(
@@ -49,7 +49,7 @@ class Product extends StatelessWidget {
                   children: [
                     Expanded(
                       child: AutoSizeText(
-                        productData.title??'',
+                        productData?.title??'',
                         minFontSize: 8,
                         maxLines: 2,
                         style: TextStyle(fontSize: 15),
@@ -57,7 +57,7 @@ class Product extends StatelessWidget {
                     ),
                     // const Spacer(),
                     Text(
-                      '${productData.priceAfterDiscount!="null"?productData.priceAfterDiscount:"0"} ${tr("KWD")}',
+                      '${productData?.priceAfterDiscount!="null"?productData?.priceAfterDiscount:"0"} ${tr("KWD")}',
                       style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600),
                     ),
                   ],

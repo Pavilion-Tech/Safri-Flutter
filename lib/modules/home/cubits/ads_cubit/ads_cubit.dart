@@ -30,7 +30,7 @@ class AdsCubit extends Cubit<AdsStates>{
         emit(GetAdsWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(GetAdsErrorState());
     });
   }

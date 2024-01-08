@@ -139,7 +139,7 @@ class FastCubit extends Cubit<FastStates>{
       }
     }).catchError((e){
       print(e.toString());
-      // showToast(msg: tr('wrong'));
+       showToast(msg: tr('server_error'),toastState: false);
       emit(ProviderProductsErrorState());
     });
   }
@@ -168,7 +168,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(RateWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(RateErrorState());
     });
   }
@@ -205,7 +205,7 @@ class FastCubit extends Cubit<FastStates>{
       }
     }).catchError((e){
       print(e.toString());
-      // showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(ProviderBranchesErrorState());
     });
   }
@@ -295,7 +295,7 @@ class FastCubit extends Cubit<FastStates>{
       }
     }).catchError((e){
       print("error is ${e}");
-      // showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(AddToCartErrorState());
     });
   }
@@ -360,7 +360,7 @@ class FastCubit extends Cubit<FastStates>{
       }
     }).catchError((e){
       print(e.toString());
-      // showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(GetCartErrorState());
     });
   }
@@ -396,7 +396,7 @@ class FastCubit extends Cubit<FastStates>{
       }
     }).catchError((e){
       this.cartId = '';
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(AddToCartErrorState());
     });
   }
@@ -499,7 +499,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(CreateOrderWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(CreateOrderErrorState());
     });
   }
@@ -535,7 +535,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(NotifyMeWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(NotifyMeErrorState());
     });
   }
@@ -567,7 +567,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(DeleteAllCartWrongState());
       }
     }).catchError((e){
-      // showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(DeleteAllCartErrorState());
     });
   }
@@ -593,7 +593,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(CouponWrongState());
       }
     }).catchError((e){
-      // showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(CouponErrorState());
     });
   }
@@ -623,7 +623,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(CheckOrderStatusWrongState());
       }
     }).catchError((e){
-      // showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(CheckOrderStatusErrorState());
     });
   }
@@ -673,7 +673,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(SingleProviderWrongState());
       }
     }).catchError((e){
-      // showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(SingleProviderErrorState());
     });
   }
@@ -709,7 +709,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(AddOrRemoveProductFavoriteWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(AddOrRemoveProductFavoriteErrorState());
     });
   }

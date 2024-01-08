@@ -88,7 +88,7 @@ class MenuCubit extends Cubit<MenuStates>{
         showToast(msg: tr('wrong'),toastState: true);
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(StaticPagesErrorState());
     });
   }
@@ -106,7 +106,7 @@ class MenuCubit extends Cubit<MenuStates>{
         // showToast(msg: tr('wrong'),toastState: true);
       }
     }).catchError((e){
-      // showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(UserErrorState());
     });
   }
@@ -140,7 +140,7 @@ class MenuCubit extends Cubit<MenuStates>{
         emit(UpdateProfileWrongState());
       }
     }).catchError((e){
-      // showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       print(e.toString());
       emit(UpdateProfileErrorState());
     });
@@ -163,7 +163,7 @@ class MenuCubit extends Cubit<MenuStates>{
       }
     }).catchError((e){
       /// todo error here
-      // showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(SettingsErrorState());
     });
   }
@@ -193,7 +193,7 @@ class MenuCubit extends Cubit<MenuStates>{
       }
     }).catchError((e){
       print(e.toString());
-      // showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(OrderErrorState());
     });
   }
@@ -235,7 +235,7 @@ class MenuCubit extends Cubit<MenuStates>{
         emit(ContactUsWrongState());
       }
     }).catchError((e){
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(ContactUsErrorState());
     });
   }
@@ -264,7 +264,7 @@ class MenuCubit extends Cubit<MenuStates>{
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(GetContactUsErrorState());
     });
   }
@@ -306,7 +306,7 @@ class MenuCubit extends Cubit<MenuStates>{
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'));
+      showToast(msg: tr('server_error'),toastState: false);
       emit(NotificationErrorState());
     });
   }

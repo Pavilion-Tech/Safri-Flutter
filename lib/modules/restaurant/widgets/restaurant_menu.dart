@@ -33,6 +33,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
 
   ItemScrollController scrollController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  bool isFirst = true;
   @override
   void initState() {
     super.initState();
@@ -42,14 +43,27 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
       String _index2 = _index1.toString().replaceAll('(', '');
       String _index3 = _index2.toString().replaceAll(',', '');
       String _index4 = _index3.toString().replaceAll(' ', '');
-      if(_index4.length ==1){
-        if(HomeCategoryCubit.get(context).currentIndex != _index4){
-          HomeCategoryCubit.get(context).currentIndex = int.parse(_index4);
-          setState(() {});
+      if(!isFirst){
+        if(_index4.length ==1){
+          if(HomeCategoryCubit.get(context).currentIndex != _index4){
+            HomeCategoryCubit.get(context).currentIndex = int.parse(_index4);
+            setState(() {});
+          }
+        }else{
+          // print(_index4.toString().characters.first);
+          // print(_index4.toString().characters);
+          // print(_index4.toString().characters.last);
+          if(HomeCategoryCubit.get(context).currentIndex != _index4.toString().characters.first){
+            HomeCategoryCubit.get(context).currentIndex = int.parse(_index4.toString().characters.first);
+            setState(() {});
+          }
         }
       }
+
     });
+    isFirst = false;
     HomeCategoryCubit.get(context).currentIndex=0;
+    setState(() {});
   }
 
   @override
@@ -67,7 +81,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition:widget.cubit.singleProviderModel?.data?.childCategoriesModified?.isNotEmpty??true,
+          condition:widget.cubit.singleProviderModel?.data?.childCategoriesModified?.isNotEmpty??false,
           fallback: (c)=>Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -118,15 +132,15 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                       color: Colors.grey.shade300,
                                       padding: EdgeInsets.symmetric(horizontal: 30),
                                       alignment: AlignmentDirectional.centerStart,
-                                      child: Text(widget.cubit.singleProviderModel!.data!.childCategoriesModified![index].title??''),
+                                      child: Text(widget.cubit.singleProviderModel?.data?.childCategoriesModified?[index].title??''),
                                     ),
                                     ListView.separated(
                                       itemBuilder: (c,i)=>Product(
-                                          widget.cubit.productsModel[index].data!.data![i],
-                                          widget.cubit.singleProviderModel!.data!.openStatus == 'closed'?true:false
+                                          widget.cubit.productsModel[index].data?.data?[i],
+                                          widget.cubit.singleProviderModel?.data?.openStatus == 'closed'?true:false
                                       ),
                                       separatorBuilder: (c,i)=>const SizedBox(height: 20,),
-                                      itemCount: widget.cubit.productsModel[index].data!.data!.length,
+                                      itemCount: widget.cubit.productsModel[index].data?.data?.length??0,
                                       physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       padding: EdgeInsets.only(top: 20,right: 20,left: 20),

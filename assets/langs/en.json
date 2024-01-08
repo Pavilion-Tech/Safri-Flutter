@@ -227,5 +227,6 @@
   "no_results": "No Results Found",
   "restaurant_closed": "Restaurant is Closed For Now",
   "choose_filter": "Choose Filter",
-  "all": "All"
+  "all": "All",
+  "server_error": "Server Error"
 }

@@ -50,7 +50,7 @@ class AuthCubit extends Cubit<AuthStates>{
         CacheHelper.saveData(key: 'id', value: id);
         code =  value.data['data']['code'];
         print(code);
-        //showToast(msg:'${tr('code_is')} $code',gravity: ToastGravity.CENTER);
+        showToast(msg:'${tr('code_is')} $code',gravity: ToastGravity.CENTER);
         if(context!=null)
         showModalBottomSheet(
             context: context,
@@ -70,7 +70,7 @@ class AuthCubit extends Cubit<AuthStates>{
       }
     }).catchError((e){
       print(e.toString());
-      showToast(msg: tr('wrong'),toastState: false);
+      showToast(msg: tr('server_error'),toastState: false);
       emit(LoginErrorState());
     });
   }
@@ -99,6 +99,7 @@ class AuthCubit extends Cubit<AuthStates>{
         emit(VerificationCodeWrongState());
       }
     }).catchError((e){
+      showToast(msg: tr('server_error'),toastState: false);
       emit(VerificationCodeErrorState());
     });
   }

@@ -32,7 +32,7 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   try{
     await Firebase.initializeApp(
-         options: DefaultFirebaseOptions.currentPlatform
+         //options: DefaultFirebaseOptions.currentPlatform
     );
     Messaging.initFCM();
     await FirebaseMessaging.instance.requestPermission();
