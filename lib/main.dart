@@ -16,6 +16,7 @@ import 'package:safri/shared/network/local/cache_helper.dart';
 import 'package:safri/shared/network/remote/dio.dart';
 import 'package:safri/splash_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'firebase_options.dart';
 import 'modules/addresses/cubit/address_cubit/address_cubit.dart';
 import 'modules/chat/presentation/cubit/chat_msg_cubit/chat_msg_cubit.dart';
 import 'modules/home/cubits/ads_cubit/ads_cubit.dart';
@@ -31,7 +32,7 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   try{
     await Firebase.initializeApp(
-        // options: DefaultFirebaseOptions.currentPlatform
+         options: DefaultFirebaseOptions.currentPlatform
     );
     Messaging.initFCM();
     await FirebaseMessaging.instance.requestPermission();
@@ -44,8 +45,8 @@ void main()async {
   DioHelper.init();
   DioHelper1.init();
   await CacheHelper.init();
-  lat = double.tryParse(CacheHelper.getData(key: 'lat')??"");
-  lng = double.tryParse(CacheHelper.getData(key: 'lng')??"");
+  lat = CacheHelper.getData(key: 'lat');
+  lng = CacheHelper.getData(key: 'lng');
   id = CacheHelper.getData(key: 'id');
    token = CacheHelper.getData(key: 'token');
     print("token");

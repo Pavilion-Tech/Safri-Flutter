@@ -130,15 +130,14 @@ class CartItem extends StatelessWidget {
                                     height: 34,width: 34,
                                     decoration: BoxDecoration(
                                      shape: BoxShape.circle,
-                                      color: Color(0xffFFB115)
+                                      color: defaultColor
                                     ),
-                                    child: Center(
-                                      child: const AutoSizeText(
-                                        '+',
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
-                                      ),
+                                    alignment: AlignmentDirectional.center,
+                                    child: const AutoSizeText(
+                                      '+',
+                                      minFontSize: 8,
+                                      maxLines: 1,
+                                      style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white,height: 2),
                                     ),
                                   ),
                                 ),
@@ -156,7 +155,7 @@ class CartItem extends StatelessWidget {
 
                                       FastCubit.get(context).deleteCart(cartId: data.id??'');
                                     },
-                                    child: Image.asset(Images.bin,width: 20,height: 20,color: defaultColor,),
+                                    child: Image.asset(Images.bin,width: 20,height: 20,color: Colors.red,),
                                   )else
                                   InkWell(
                                     onTap: (){
@@ -170,15 +169,14 @@ class CartItem extends StatelessWidget {
                                       height: 34,width: 34,
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color:Color(0xffB3B3B3)
+                                          color:Colors.red
                                       ),
-                                      child: Center(
-                                        child: const AutoSizeText(
-                                          '-',
-                                          minFontSize: 8,
-                                          maxLines: 1,
-                                          style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
-                                        ),
+                                      alignment: AlignmentDirectional.center,
+                                      child: const AutoSizeText(
+                                        '-',
+                                        minFontSize: 8,
+                                        maxLines: 1,
+                                        style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
                                       ),
                                     ),
                                   ),

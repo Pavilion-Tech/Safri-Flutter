@@ -38,6 +38,7 @@ class ItemAddedDialog extends StatelessWidget {
                   text: tr('continue_shopping'),
                   onTap: () {
                     Navigator.pop(context);
+                    Navigator.pop(context);
                   }),
               TextButton(
                   onPressed: () {

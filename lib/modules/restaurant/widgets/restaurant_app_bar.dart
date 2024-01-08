@@ -332,13 +332,13 @@ class RestaurantAppBar extends StatelessWidget {
                 child: Container(
                   margin: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.6),
+                      color: Colors.black.withOpacity(0.6),
                     borderRadius: BorderRadius.circular(8)
                   ),
                   child: Center(
                     child: IconButton(
                       onPressed: ()=>Navigator.pop(context),
-                      icon: Icon(Icons.arrow_back_ios_outlined,color: Colors.white,),
+                      icon: Icon(Icons.arrow_back_ios_outlined,color:defaultColor,),
                     ),
                   ),
                 ),

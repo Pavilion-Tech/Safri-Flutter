@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safri/layout/cubit/cubit.dart';
 import 'package:safri/layout/cubit/states.dart';
+import 'package:safri/modules/home/cubits/home_category_cubit/home_category_states.dart';
 import 'package:safri/shared/images/images.dart';
 import 'package:safri/widgets/item_shared/category_widget.dart';
 import 'package:safri/widgets/restaurant/product.dart';
 import 'package:safri/widgets/shimmer/default_list_shimmer.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../home/cubits/home_category_cubit/home_category_cubit.dart';
 
@@ -26,14 +28,41 @@ class RestaurantMenu extends StatefulWidget {
 }
 
 class _RestaurantMenuState extends State<RestaurantMenu> {
+
+  List<Key> key=[];
+
+  ItemScrollController scrollController = ItemScrollController();
+  ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    itemPositionsListener.itemPositions.addListener(() {
+      final indices = itemPositionsListener.itemPositions.value.map((e) => e.index);
+      String _index1 = indices.toString().replaceAll(')', '');
+      String _index2 = _index1.toString().replaceAll('(', '');
+      String _index3 = _index2.toString().replaceAll(',', '');
+      String _index4 = _index3.toString().replaceAll(' ', '');
+      if(_index4.length ==1){
+        if(HomeCategoryCubit.get(context).currentIndex != _index4){
+          HomeCategoryCubit.get(context).currentIndex = int.parse(_index4);
+          setState(() {});
+        }
+      }
+    });
     HomeCategoryCubit.get(context).currentIndex=0;
   }
+
+  @override
+  void dispose() {
+    itemPositionsListener.itemPositions.removeListener(() {});
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
+  listener: (context, state) {},
+  builder: (context, state) {
     return BlocConsumer<FastCubit,FastStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -49,7 +78,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                 ],
               )),
           builder: (c)=> ConditionalBuilder(
-            condition: widget.cubit.productsModel!=null,
+            condition: widget.cubit.productsModel.isNotEmpty,
             fallback: (c)=>Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: DefaultListShimmer(),
@@ -58,10 +87,14 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
               children: [
                 Padding(
                   padding:EdgeInsetsDirectional.only(top: 0,start: 20),
-                  child: CategoryWidget(data: widget.cubit.singleProviderModel?.data?.childCategoriesModified,isRestaurant: true),
+                  child: CategoryWidget(
+                      data: widget.cubit.singleProviderModel?.data?.childCategoriesModified,
+                      isRestaurant: true,
+                      itemScrollController: scrollController,
+                  ),
                 ),
                 ConditionalBuilder(
-                    condition: widget.cubit.productsModel!.data!.data!.isNotEmpty,
+                    condition: widget.cubit.productsModel.isNotEmpty,
                     fallback: (c)=>Expanded(child: Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -72,34 +105,40 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                           ],
                         ))),
                     builder: (c){
-                      Future.delayed(Duration.zero, () {
-                        widget.cubit.paginationProviderProducts();
-                      });
                       return Expanded(
-                        child: Column(
-                          children: [
-                            if (state is ProviderProductsLoadingState)
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 40.0),
-                                  child:DefaultListShimmer(),
-                                ),
-                              )else
-                            Expanded(
-                                child: ListView.separated(
-
-                                  itemBuilder: (c,i)=>Product(
-                                      widget.cubit.productsModel!.data!.data![i],
-                                      widget.cubit.singleProviderModel!.data!.openStatus == 'closed'?true:false
-                                  ),
-                                  separatorBuilder: (c,i)=>const SizedBox(height: 20,),
-                                  itemCount: widget.cubit.productsModel!.data!.data!.length,
-                                  controller:widget.cubit.productsScrollController,
-                                  padding: EdgeInsets.only(top: 20,right: 20,left: 20,),
-                                )
+                        child: ScrollablePositionedList.separated(
+                            padding: EdgeInsets.only(bottom: 30),
+                            itemBuilder: (c,index)=>Builder(
+                              builder: (context) {
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      height: 30,width: double.infinity,
+                                      color: Colors.grey.shade300,
+                                      padding: EdgeInsets.symmetric(horizontal: 30),
+                                      alignment: AlignmentDirectional.centerStart,
+                                      child: Text(widget.cubit.singleProviderModel!.data!.childCategoriesModified![index].title??''),
+                                    ),
+                                    ListView.separated(
+                                      itemBuilder: (c,i)=>Product(
+                                          widget.cubit.productsModel[index].data!.data![i],
+                                          widget.cubit.singleProviderModel!.data!.openStatus == 'closed'?true:false
+                                      ),
+                                      separatorBuilder: (c,i)=>const SizedBox(height: 20,),
+                                      itemCount: widget.cubit.productsModel[index].data!.data!.length,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.only(top: 20,right: 20,left: 20),
+                                    ),
+                                  ],
+                                );
+                              }
                             ),
-
-                          ],
+                            itemPositionsListener: itemPositionsListener,
+                            itemScrollController: scrollController,
+                            separatorBuilder: (c,index)=>const SizedBox(height: 20,),
+                            itemCount: widget.cubit.singleProviderModel!.data!.childCategoriesModified!.length
                         ),
                       );
                     }
@@ -111,5 +150,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
       },
 
     );
+  },
+);
   }
 }

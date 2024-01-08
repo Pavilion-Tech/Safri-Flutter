@@ -8,7 +8,7 @@ import 'package:safri/shared/images/images.dart';
 import 'package:safri/shared/styles/colors.dart';
 
 class PaymentMethodModel{
-  String? image;
+  List<String>? image;
   String? title;
   String method;
   PaymentMethodModel({
@@ -30,9 +30,7 @@ class PaymentMethod extends StatefulWidget {
 class _PaymentMethodState extends State<PaymentMethod> {
 
   List<PaymentMethodModel> model = [
-    PaymentMethodModel(image: Images.visa,method: 'online'),
-   if(Platform.isIOS) PaymentMethodModel(image: Images.applePay,method: 'online'),
-    PaymentMethodModel(image: Images.kNet,method: 'online'),
+    PaymentMethodModel(image: [Images.visa,if(Platform.isIOS)Images.applePay,Images.kNet],method: 'online'),
     PaymentMethodModel(title: tr('pay_on_delivery'),method: 'cash'),
     // PaymentMethodModel(title: "${tr('Use_Wallet_Balance')} (250)",method: 'online'),
 
@@ -58,13 +56,12 @@ class _PaymentMethodState extends State<PaymentMethod> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: ListView.separated(
-              itemBuilder: (c,i)=>itemBuilder(model[i],i),
-              separatorBuilder: (c,i)=>const SizedBox(height: 20,),
-              physics:const NeverScrollableScrollPhysics(),
-              padding: EdgeInsetsDirectional.zero,
-              shrinkWrap: true,
-              itemCount: model.length
+          child: Column(
+            children: [
+              itemBuilder(model[0],0),
+              const SizedBox(height: 20,),
+              itemBuilder(model[1],1),
+            ],
           ),
         )
 
@@ -93,7 +90,14 @@ class _PaymentMethodState extends State<PaymentMethod> {
         child: Row(
           children: [
             if(model.image!=null)
-            Image.asset(model.image!,width: 54,),
+            ListView.separated(
+                itemBuilder: (c,i)=>Image.asset(model.image![i],width: 54,),
+                scrollDirection: Axis.horizontal,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                separatorBuilder: (c,i)=>const SizedBox(width: 20,),
+                itemCount: model.image!.length
+            ),
             if(model.title!=null)
             AutoSizeText(model.title??"", minFontSize: 8,
               maxLines: 1,style: TextStyle(fontSize: 16),),

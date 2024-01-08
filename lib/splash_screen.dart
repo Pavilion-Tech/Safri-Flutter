@@ -85,7 +85,9 @@ class _SplashScreenState extends State<SplashScreen> {
               child:Image.asset(Images.appIcon, width: 180, height: 180),
             ),
 
-            Text("SAFRI",style: TextStyle(color: defaultColor,fontWeight: FontWeight.w700,fontSize: 28),),
+            Text(
+              myLocale=='en'?"SAFRI":'سفري',
+              style: TextStyle(color: defaultColor,fontWeight: FontWeight.w700,fontSize: 28),),
           ],
         ),
       ),

@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safri/modules/log_body.dart';
@@ -14,6 +18,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../shared/components/components.dart';
 import '../../shared/components/constant.dart';
+import '../../shared/firebase_helper/firebase_dynamic_link.dart';
 import '../../widgets/menu/delete_account_dialog.dart';
 import '../../widgets/menu/lang_dialog.dart';
 import '../../widgets/menu/menu_appbar.dart';
@@ -136,16 +141,20 @@ class MenuScreen extends StatelessWidget {
                        ),itemBuilder(
                            title: tr('share_app'),
                            onPressed: () async{
-                             Share.share('https://onfastt.page.link/qbvQ');
+                             String link = '';
+                             if(defaultTargetPlatform == TargetPlatform.iOS){
+                               link = 'https://apps.apple.com/us/app/safri-foods-coffee-order/id6474440706';
+                             }else{
+                               link = 'https://play.google.com/store/apps/details?id=com.safri.pavilion&pli=1';
+                             }
+                             Share.share(link);
 
                            }
                        ),itemBuilder(
                            title: '${tr('version')} $version',
                        ),
                        TextButton(
-                         onPressed: (){
-                           openUrl('https://pavilion-teck.com/');
-                         },
+                         onPressed: null,
                          child: Row(
                            children: [
                              Text(

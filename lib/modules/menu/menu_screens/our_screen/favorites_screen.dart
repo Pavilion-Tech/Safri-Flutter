@@ -74,7 +74,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           return InkWell(
                             onTap: (){
                               try{
-                                FastCubit.get(context).productsModel = null;
+                                FastCubit.get(context).productsModel.clear();
                                 FastCubit.get(context).providerId = data.id??'';
                                 FastCubit.get(context).providerProductId = data.childCategoriesModified!.isNotEmpty?data.childCategoriesModified![0].id??"":'';
                                 FastCubit.get(context).providerBranchesModel=null;

@@ -38,7 +38,7 @@ class _LangDialogState extends State<LangDialog> {
             const SizedBox(height: 20,),
             itemBuilder(
               title: tr('ar'),
-              image: Images.flag8,
+              image: Images.flag7,
               isSelected: myLocale == 'ar',
             ),
           ],

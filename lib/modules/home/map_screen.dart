@@ -22,6 +22,10 @@ class MapScreen extends StatelessWidget {
       HomeCategoryCubit.get(context).position=LatLng(25.2048,55.2708);
       HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
     }
+    if(lat!=null){
+      HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
+      HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
+    }
     return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
       listener: (context, state) {},
       builder: (context, state) {

@@ -55,6 +55,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '523296260220',
     projectId: 'safri-c7aa3',
     storageBucket: 'safri-c7aa3.appspot.com',
+    deepLinkURLScheme: 'https://safriapp.page.link'
+
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -64,5 +66,6 @@ class DefaultFirebaseOptions {
     projectId: 'safri-c7aa3',
     storageBucket: 'safri-c7aa3.appspot.com',
     iosBundleId: 'com.safri.pavilion',
+    deepLinkURLScheme: 'https://safriapp.page.link'
   );
 }

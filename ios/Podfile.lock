@@ -157,9 +157,9 @@ PODS:
   - permission_handler_apple (9.1.1):
     - Flutter
   - PromisesObjC (2.3.1)
-  - SDWebImage (5.18.6):
-    - SDWebImage/Core (= 5.18.6)
-  - SDWebImage/Core (5.18.6)
+  - SDWebImage (5.18.8):
+    - SDWebImage/Core (= 5.18.8)
+  - SDWebImage/Core (5.18.8)
   - SDWebImageWebPCoder (0.14.2):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
@@ -312,7 +312,7 @@ SPEC CHECKSUMS:
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  SDWebImage: 3d8caa2430f3d674dbb3e515df4a100a2105af5f
+  SDWebImage: a81bbb3ba4ea5f810f4069c68727cb118467a04a
   SDWebImageWebPCoder: 633b813fca24f1de5e076bcd7f720c038b23892b
   share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
@@ -325,4 +325,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f21874f5ad20417a1379dd7f118d0a115e248b53
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1

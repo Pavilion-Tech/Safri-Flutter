@@ -20,7 +20,7 @@ class ProviderItem extends StatelessWidget {
     return providerData!=null?InkWell(
       onTap: (){
        try{
-         FastCubit.get(context).productsModel = null;
+         FastCubit.get(context).productsModel.clear();
          FastCubit.get(context).providerId = providerData?.id??'';
          FastCubit.get(context).providerProductId = providerData!.childCategoriesModified!.isNotEmpty?providerData!.childCategoriesModified![0].id??"":'';
          FastCubit.get(context).providerBranchesModel=null;

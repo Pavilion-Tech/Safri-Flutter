@@ -8,15 +8,16 @@ import 'package:safri/models/category_model.dart';
 import 'package:safri/shared/components/uti.dart';
 import 'package:safri/shared/images/images.dart';
 import 'package:safri/shared/styles/colors.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'image_net.dart';
 
 class CategoryWidget extends StatefulWidget {
-  CategoryWidget({this.data, this.isRestaurant = false, this.isSearch = false,  });
+  CategoryWidget({this.data, this.isRestaurant = false, this.isSearch = false,this.itemScrollController });
 
   final List<CategoryData>? data;
-
+  ItemScrollController? itemScrollController;
   final bool isRestaurant;
   final bool isSearch;
 
@@ -36,6 +37,11 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         FastCubit.get(context).emitState();
       }
     }
+    if(!widget.isSearch&&!widget.isRestaurant){
+      setState(() {
+        HomeCategoryCubit.get(context).currentIndex = 0;
+      });
+    }
     super.initState();
   }
 
@@ -46,43 +52,71 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         fallback: (c) => SizedBox(),
         builder: (c) => SizedBox(
               width: double.infinity,
-              child: Column(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  AlignedGridView.count(
-                     padding: EdgeInsets.zero,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      crossAxisCount: 4,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      itemCount:isShowMore? widget.data?.length: widget.data?.take(4).length,
-                      itemBuilder: (context, index) {
-                        return categoryItem(widget.data![index], index);
-                      }
-
-                      // Wrap(
-                      //   spacing: 15,
-                      //   runSpacing: 15,
-                      //   children: List.generate(widget.data!.length, (i) => categoryItem(widget.data![i], i)),
-                      // ),
-                      ),
-                  if(widget.data!.length >4)
+                  if(!widget.isRestaurant&&!widget.isSearch)
                   InkWell(
                     onTap: () {
-                          isShowMore=!isShowMore;
-                          setState(() {
-
-                          });
+                      setState(() {
+                        HomeCategoryCubit.get(context).currentIndex = 0;
+                      });
                     },
-                    child: AutoSizeText(isShowMore? tr('Show_Less'): tr('Show_More'),
-                      minFontSize: 8,
-                      maxLines: 1,
-                      style: TextStyle(
-
-                        decoration: TextDecoration.underline,
-                      color: defaultColor,fontSize: 14,fontWeight: FontWeight.w500
-                    ),),
-                  )
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 66,
+                          width: 66,
+                          // padding: const EdgeInsetsDirectional.only(start: 10, end: 20),
+                          alignment: AlignmentDirectional.center,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.grey.shade400,
+                              border: Border.all(color: HomeCategoryCubit.get(context).currentIndex == 0 ? defaultColor : Color(0xffF2F2F2))),
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.5),
+                            child: Center(
+                              child: Text(
+                                'A',
+                                style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        AutoSizeText(
+                          'All Restaurant',
+                          minFontSize: 9,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: HomeCategoryCubit.get(context).currentIndex == 0?defaultColor:null),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if(!widget.isRestaurant&&!widget.isSearch)
+                    const SizedBox(
+                    width: 25,
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      height: 90,
+                      child: ListView.separated(
+                          itemBuilder: (context,index)=>categoryItem(
+                              widget.data![index],
+                              !widget.isRestaurant&&!widget.isSearch
+                                  ?index+1
+                                  :index
+                          ),
+                          separatorBuilder: (c,i)=>const SizedBox(width: 25,),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: widget.data!.length
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ));
@@ -92,8 +126,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     return InkWell(
       onTap: () {
         setState(() {
-          HomeCategoryCubit.get(context).currentIndex = index;
           if (widget.isSearch) {
+            HomeCategoryCubit.get(context).currentIndex = index;
             HomeCategoryCubit.get(context).categorySearchId = category.id ?? '';
             HomeCategoryCubit.get(context).providerCategorySearchModel=null;
             HomeCategoryCubit.get(context).getProviderCategorySearch(search: HomeCategoryCubit.get(context).searchController.text.isNotEmpty?
@@ -101,10 +135,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             FastCubit.get(context).emitState();
           }
           else if (widget.isRestaurant) {
+            widget.itemScrollController!.scrollTo(index: index, duration: Duration(seconds: 1));
             FastCubit.get(context).providerProductId = category.id ?? '';
             FastCubit.get(context).getAllProducts();
           }
           else {
+            HomeCategoryCubit.get(context).currentIndex = index;
             HomeCategoryCubit.get(context).categoryId = category.id ?? '';
             HomeCategoryCubit.get(context).categorySearchId = category.id ?? '';
             print("HomeCategoryCubit.get(context).categoryId ");
@@ -131,11 +167,11 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                 // borderRadius: BorderRadiusDirectional.circular(48),
                 color: HomeCategoryCubit.get(context).currentIndex == index ? defaultColor : Color(0xffF2F2F2)),
             child: Padding(
-              padding: const EdgeInsets.all(3.0),
+              padding: const EdgeInsets.all(1.5),
               child: Center(
                 child: UTI.cachedImage(
-                       category.image ?? '',   width: 50,
-                  height: 50,radius: 1000
+                       category.image ?? '',   width: 66,
+                  height: 66,radius: 1000,fit: BoxFit.cover
 
                 ),
               ),
@@ -150,7 +186,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             minFontSize: 9,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(),
+            style: TextStyle(color: HomeCategoryCubit.get(context).currentIndex == index?defaultColor:null),
           ),
         ],
       ),

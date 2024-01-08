@@ -57,7 +57,7 @@ class FastCubit extends Cubit<FastStates>{
 
 
 
-  ProviderProductsModel? productsModel;
+  List<ProviderProductsModel> productsModel = [];
 
   String providerProductId = '';
 
@@ -72,7 +72,6 @@ class FastCubit extends Cubit<FastStates>{
   CreateOrderModel? createOrderModel;
 
 
-  ScrollController productsScrollController = ScrollController();
 
 
   ScrollController providerBranchesScrollController = ScrollController();
@@ -81,6 +80,8 @@ class FastCubit extends Cubit<FastStates>{
 
 
   SingleProviderModel? singleProviderModel;
+
+  List<ProviderProductsModel>? providerProductsModels;
 
 
 
@@ -93,13 +94,13 @@ class FastCubit extends Cubit<FastStates>{
   void emitState()=>emit(EmitState());
 
   void checkUpdate(context) async{
-    final newVersion =await NewVersionPlus().getVersionStatus();
-    if(newVersion !=null){
-      if(newVersion.canUpdate)navigateAndFinish(context, UpdateScreen(
-          url:newVersion.appStoreLink,
-          releaseNote:newVersion.releaseNotes??tr('update_desc')
-      ));
-    }
+    // final newVersion =await NewVersionPlus().getVersionStatus();
+    // if(newVersion !=null){
+    //   if(newVersion.canUpdate)navigateAndFinish(context, UpdateScreen(
+    //       url:newVersion.appStoreLink,
+    //       releaseNote:newVersion.releaseNotes??tr('update_desc')
+    //   ));
+    // }
   }
   void checkInterNet() async {
     InternetConnectionChecker().onStatusChange.listen((event) {
@@ -121,28 +122,16 @@ class FastCubit extends Cubit<FastStates>{
 
 
 
-  void getAllProducts({int page = 1}){
-    print("providerProductIdproviderProductId");
-    print(providerProductId);
+  Future<Response?> getAllProducts(){
     emit(ProviderProductsLoadingState());
-    DioHelper.postData(
-      url: '$providerProductsUrl$providerId?page=$page',
+   return DioHelper.postData(
+      url: '$providerProductsUrl$providerId',
       data: {
         'category_id': providerProductId
       }
     ).then((value) {
       if(value.data['status']==true&&value.data['data']!=null){
-        if(page == 1) {
-          productsModel = ProviderProductsModel.fromJson(value.data);
-          print(productsModel!.data!.data![0].mainImage);
-        }
-        else{
-          productsModel!.data!.currentPage = value.data['data']['currentPage'];
-          productsModel!.data!.pages = value.data['data']['pages'];
-          value.data['data']['data'].forEach((e){
-            productsModel!.data!.data!.add(ProductData.fromJson(e));
-          });
-        }
+        productsModel.add(ProviderProductsModel.fromJson(value.data));
         emit(ProviderProductsSuccessState());
       }else if(value.data['status']==false&&value.data['data']!=null){
         // showToast(msg: tr('wrong'));
@@ -152,19 +141,6 @@ class FastCubit extends Cubit<FastStates>{
       print(e.toString());
       // showToast(msg: tr('wrong'));
       emit(ProviderProductsErrorState());
-    });
-  }
-
-  void paginationProviderProducts(){
-    productsScrollController.addListener(() {
-      if (productsScrollController.offset == productsScrollController.position.maxScrollExtent){
-        if (productsModel!.data!.currentPage != productsModel!.data!.pages) {
-          if(state is! ProviderProductsLoadingState){
-            int currentPage = productsModel!.data!.currentPage! +1;
-            getAllProducts(page: currentPage);
-          }
-        }
-      }
     });
   }
 
@@ -668,12 +644,15 @@ class FastCubit extends Cubit<FastStates>{
         print(value.data['data']['is_favorited']);
         singleProviderModel = SingleProviderModel.fromJson(value.data);
 
-        productsModel = null;
+        productsModel.clear();
 
         providerId = singleProviderModel?.data?.id??'';
         print("aaaaaaaaaaaaa");
         if(singleProviderModel?.data?.childCategoriesModified?.isNotEmpty??true){
-          providerProductId = singleProviderModel?.data?.childCategoriesModified?.first.id??"";
+          singleProviderModel?.data?.childCategoriesModified?.forEach((element) {
+            providerProductId = element.id??'';
+            getAllProducts();
+          });
         }
 
         print("providerProductId");
@@ -688,7 +667,7 @@ class FastCubit extends Cubit<FastStates>{
         // navigateTo(context, RestaurantScreen(singleProviderModel!.data!,isBranch: false,));
         emit(SingleProviderSuccessState());
         getAllProductsBranches();
-        getAllProducts();
+        //getAllProducts();
       }else{
         // showToast(msg: tr('wrong'));
         emit(SingleProviderWrongState());

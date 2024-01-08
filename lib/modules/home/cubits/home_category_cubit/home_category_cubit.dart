@@ -96,9 +96,8 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         latLng.latitude, latLng.longitude,
         localeIdentifier: myLocale);
     Placemark placeMark = place[0];
-    locationController.text = placeMark.street!;
-    locationController.text += ', ${placeMark.country!}';
-    emit(GetCurrentLocationState());
+    locationController.text = placeMark.street??'';
+    locationController.text += ', ${placeMark.country??''}';
   }
   void getCategory({bool isSearch =false}){
     print("aaaaaaaaassss");

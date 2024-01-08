@@ -2,17 +2,21 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:safri/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'package:safri/modules/home/cubits/home_category_cubit/home_category_states.dart';
 import 'package:safri/modules/home/search/search_screen.dart';
 import 'package:safri/shared/images/images.dart';
 import 'package:safri/widgets/home/slider.dart';
+import '../../layout/cubit/cubit.dart';
 import '../../shared/components/components.dart';
+import '../../shared/components/constant.dart';
 import '../../shared/styles/colors.dart';
 import '../../widgets/item_shared/category_widget.dart';
 import '../../widgets/item_shared/provider_item.dart';
 import '../../widgets/shimmer/default_list_shimmer.dart';
 import '../../widgets/shimmer/home_shimmer.dart';
+import 'map_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -35,15 +39,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.initState();
       // HomeCategoryCubit.get(context).init();
-
      if(HomeCategoryCubit.get(context).categoriesModel?.data?.isEmpty??true)
-
        {
          print("theeeeee");
          print("HomeCategoryCubit.get(context).categoriesModel?.data?.");
          print(HomeCategoryCubit.get(context).categoriesModel?.data?.length);
-         HomeCategoryCubit.get(context).getCategory() ;
+         HomeCategoryCubit.get(context).getCategory();
        }
+    if(lat!=null){
+      HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
+      print('position ${HomeCategoryCubit.get(context).position}');
+      HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
+    }
 
     show();
   }
@@ -89,7 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       else
                     Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child: CategoryWidget(data: cubit.categoriesModel!.data),
+                      child: CategoryWidget(
+                          data: cubit.categoriesModel!.data,
+
+                      ),
                     ),
                     if (cubit.providerCategoryModel==null && state is ProviderCategoryLoadingState)
                       DefaultListShimmer(),
@@ -150,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     tr('fav_food'),
                     minFontSize: 8,
                     maxLines: 1,
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16,color: defaultColor),
                   ),
                 ],
               ),
@@ -172,27 +182,30 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          // InkWell(
-          //   onTap: (){
-          //     FastCubit.get(context).getCurrentLocation();
-          //     navigateTo(context, MapScreen());
-          //   },
-          //   child: Row(
-          //     children: [
-          //       Image.asset(Images.location,width: 20,),
-          //       const SizedBox(width: 5,),
-          //       Expanded(
-          //         child: Text(
-          //           FastCubit.get(context).locationController.text.isNotEmpty
-          //               ?FastCubit.get(context).locationController.text
-          //               :tr('choose_your_location'),
-          //           maxLines: 2,
-          //           style: TextStyle(height: 1),
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          // ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 15),
+            child: InkWell(
+              onTap: (){
+                HomeCategoryCubit.get(context).getCurrentLocation();
+                navigateTo(context, MapScreen());
+              },
+              child: Row(
+                children: [
+                  Image.asset(Images.location,width: 20,),
+                  const SizedBox(width: 5,),
+                  Expanded(
+                    child: Text(
+                      HomeCategoryCubit.get(context).locationController.text.isNotEmpty
+                          ?HomeCategoryCubit.get(context).locationController.text
+                          :tr('choose_your_location'),
+                      maxLines: 2,
+                      style: TextStyle(height: 1),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

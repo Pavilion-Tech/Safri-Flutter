@@ -56,7 +56,7 @@ class DefaultAppBar extends StatelessWidget {
                     Navigator.pop(context);
                   }
 
-                }, icon: Icon(Icons.arrow_back_ios_outlined)),
+                }, icon: Icon(Icons.arrow_back_ios_outlined,color: defaultColor,)),
                 AutoSizeText(
                   title,
                   minFontSize: 8,

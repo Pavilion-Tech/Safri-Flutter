@@ -33,7 +33,14 @@ class PaymentItem extends StatelessWidget {
           child: Row(
             children: [
               if(model.image!=null)
-                Image.asset(model.image!,width: 54,),
+                ListView.separated(
+                    itemBuilder: (c,i)=>Image.asset(model.image![i],width: 54,),
+                    scrollDirection: Axis.horizontal,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    separatorBuilder: (c,i)=>const SizedBox(width: 20,),
+                    itemCount: model.image!.length
+                ),
               if(model.title!=null)
                 AutoSizeText(model.title??"",
                   minFontSize: 8,

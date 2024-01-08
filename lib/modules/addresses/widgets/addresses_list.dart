@@ -150,101 +150,95 @@ class _AddressesListState extends State<AddressesList> {
               color: Color(0xffB3B3B3).withOpacity(0.3)
           ),
         ),
-        Slidable(
-          direction: Axis.horizontal,
-          endActionPane: ActionPane(
-            extentRatio: 0.12,
-            motion: InkWell(
-              onTap: (){
-                AddressCubit.get(context).deleteAddress(addressId: addressesCubit.addressesData[index].id.toString(), context: context);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius:const BorderRadiusDirectional.only(
-                      topEnd: Radius.circular(10),
-                      bottomEnd: Radius.circular(10),
-                    ),
-                    color: Color(0xffB3B3B3).withOpacity(0.3)
-                ),
-                padding: const EdgeInsetsDirectional.all(14),
-                child: Image.asset(Images.bin,width: 20,height: 20,),
-              ),
-            ),
-            children: const[],
-          ),
-          child: GestureDetector(
-            onTap: () {
-              AddressCubit.get(context).setDefaultAddress(addressId: addressesCubit.addressesData[index].id.toString(), context: context,
-                  addressesData: addressesCubit.addressesData[index]);
-            },
-            child: Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: Container(
-                  // margin: EdgeInsets.symmetric(horizontal:   20, vertical:  10),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Color(0xffB3B3B3).withOpacity(0.3),
-                    border: addressesCubit.addressesData[index].isDefault == true
-                        ? Border.all(
-                      color: defaultColor, // Set the border color here
-                      width: 1, // Set the border width here
-                    )
-                        : null,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              addressesCubit.addressesData[index].title ?? "",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff3B3B3B)),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              children: [
-                                SvgPicture.asset(Images.location1,color: Color(0xffEF7F18),),
-                                SizedBox(
-                                  width: 3,
-                                ),
-                                Expanded(
-                                  child: AutoSizeText(
-                                    addressesCubit.addressesData[index].address ?? "",
-                                    maxLines: 3,
-                                    minFontSize: 10,
-                                    style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Color(0xff5C5C5C)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            navigateTo(context, AddNewAddressScreen(updateAddressRequest:  UpdateAddressRequest(
-                              addressId: addressesCubit.addressesData[index].id.toString(),
-                              addressDetails: addressesCubit.addressesData[index].address.toString(),
-                              latitude: addressesCubit.addressesData[index].latitude.toString(),
-                              longitude: addressesCubit.addressesData[index].longitude.toString(),
-                              title: addressesCubit.addressesData[index].title.toString(),
-                            )));
+        GestureDetector(
+          onTap: () {
+            AddressCubit.get(context).setDefaultAddress(addressId: addressesCubit.addressesData[index].id.toString(), context: context,
+                addressesData: addressesCubit.addressesData[index]);
 
-                          },
-                          child: SvgPicture.asset(Images.edit,color: defaultColor,))
-                    ],
-                  ),
-                )),
-          ),
+          },
+          child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                // margin: EdgeInsets.symmetric(horizontal:   20, vertical:  10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color(0xffB3B3B3).withOpacity(0.3),
+                  border: addressesCubit.addressesData[index].isDefault == true
+                      ? Border.all(
+                    color: defaultColor, // Set the border color here
+                    width: 1, // Set the border width here
+                  )
+                      : null,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            addressesCubit.addressesData[index].title ?? "",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Color(0xff3B3B3B)),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              SvgPicture.asset(Images.location1,color: Color(0xffEF7F18),),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Expanded(
+                                child: AutoSizeText(
+                                  addressesCubit.addressesData[index].address ?? "",
+                                  maxLines: 3,
+                                  minFontSize: 10,
+                                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14, color: Color(0xff5C5C5C)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Column(
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                AddressCubit.get(context).deleteAddress(addressId: addressesCubit.addressesData[index].id.toString(), context: context);
+
+                              },
+                              child: Image.asset(Images.bin,width: 20,height: 20,)
+                          ),
+                          const SizedBox(height: 20,),
+                          InkWell(
+                              onTap: () {
+                                navigateTo(context, AddNewAddressScreen(updateAddressRequest:  UpdateAddressRequest(
+                                  addressId: addressesCubit.addressesData[index].id.toString(),
+                                  addressDetails: addressesCubit.addressesData[index].address.toString(),
+                                  latitude: addressesCubit.addressesData[index].latitude.toString(),
+                                  longitude: addressesCubit.addressesData[index].longitude.toString(),
+                                  title: addressesCubit.addressesData[index].title.toString(),
+                                )));
+
+                              },
+                              child: SvgPicture.asset(Images.edit,color: defaultColor,)),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )),
         ),
       ],
     );

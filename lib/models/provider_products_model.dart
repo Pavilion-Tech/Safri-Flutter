@@ -15,6 +15,7 @@ class Data {
   int? currentPage;
   int? pages;
   int? count;
+  String? categoryName;
   List<ProductData>? data;
 
   Data.fromJson(Map<String, dynamic> json) {
