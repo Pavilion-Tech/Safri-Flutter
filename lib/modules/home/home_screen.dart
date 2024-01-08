@@ -48,8 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
        }
     if(lat!=null){
       HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
-      print('position ${HomeCategoryCubit.get(context).position}');
       HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
+    }else{
+      HomeCategoryCubit.get(context).getCurrentLocation();
     }
 
     show();

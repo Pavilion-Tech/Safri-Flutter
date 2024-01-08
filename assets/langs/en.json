@@ -228,5 +228,8 @@
   "restaurant_closed": "Restaurant is Closed For Now",
   "choose_filter": "Choose Filter",
   "all": "All",
-  "server_error": "Server Error"
+  "server_error": "Server Error",
+  "all_restaurant": "All Restaurant",
+  "a": "A"
+
 }

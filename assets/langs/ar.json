@@ -225,7 +225,10 @@
   "restaurant_closed": "المطعم مغلق في الوقت الراهن",
   "choose_filter": "اختر التصفية",
   "all": "الكل",
-  "server_error": "خطأ من السيرفر"
+  "server_error": "خطأ من السيرفر",
+  "all_restaurant": "كل المطاعم",
+  "a": "كل"
+
 
 
 

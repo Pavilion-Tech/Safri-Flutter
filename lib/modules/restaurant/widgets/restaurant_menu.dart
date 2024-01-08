@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safri/layout/cubit/cubit.dart';
 import 'package:safri/layout/cubit/states.dart';
 import 'package:safri/modules/home/cubits/home_category_cubit/home_category_states.dart';
+import 'package:safri/shared/components/constant.dart';
 import 'package:safri/shared/images/images.dart';
 import 'package:safri/widgets/item_shared/category_widget.dart';
 import 'package:safri/widgets/restaurant/product.dart';
@@ -45,10 +46,8 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
       String _index4 = _index3.toString().replaceAll(' ', '');
       if(!isFirst){
         if(_index4.length ==1){
-          if(HomeCategoryCubit.get(context).currentIndex != _index4){
-            HomeCategoryCubit.get(context).currentIndex = int.parse(_index4);
-            setState(() {});
-          }
+          HomeCategoryCubit.get(context).currentIndex = int.parse(_index4);
+          setState(() {});
         }else{
           // print(_index4.toString().characters.first);
           // print(_index4.toString().characters);
@@ -121,7 +120,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                     builder: (c){
                       return Expanded(
                         child: ScrollablePositionedList.separated(
-                            padding: EdgeInsets.only(bottom: 30),
+                            padding: EdgeInsets.only(bottom: size!.height*.25),
                             itemBuilder: (c,index)=>Builder(
                               builder: (context) {
                                 return Column(
@@ -152,7 +151,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                             itemPositionsListener: itemPositionsListener,
                             itemScrollController: scrollController,
                             separatorBuilder: (c,index)=>const SizedBox(height: 20,),
-                            itemCount: widget.cubit.singleProviderModel!.data!.childCategoriesModified!.length
+                            itemCount: widget.cubit.singleProviderModel?.data?.childCategoriesModified?.length??0
                         ),
                       );
                     }

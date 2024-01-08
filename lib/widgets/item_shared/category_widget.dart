@@ -52,57 +52,58 @@ class _CategoryWidgetState extends State<CategoryWidget> {
         fallback: (c) => SizedBox(),
         builder: (c) => SizedBox(
               width: double.infinity,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if(!widget.isRestaurant&&!widget.isSearch)
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        HomeCategoryCubit.get(context).currentIndex = 0;
-                      });
-                    },
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 66,
-                          width: 66,
-                          // padding: const EdgeInsetsDirectional.only(start: 10, end: 20),
-                          alignment: AlignmentDirectional.center,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.grey.shade400,
-                              border: Border.all(color: HomeCategoryCubit.get(context).currentIndex == 0 ? defaultColor : Color(0xffF2F2F2))),
-                          child: Padding(
-                            padding: const EdgeInsets.all(1.5),
-                            child: Center(
-                              child: Text(
-                                'A',
-                                style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w500),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if(!widget.isRestaurant&&!widget.isSearch)
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          HomeCategoryCubit.get(context).currentIndex = 0;
+                        });
+                      },
+                      overlayColor: MaterialStateProperty.all(Colors.transparent),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 66,
+                            width: 66,
+                            // padding: const EdgeInsetsDirectional.only(start: 10, end: 20),
+                            alignment: AlignmentDirectional.center,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.grey.shade400,
+                                border: Border.all(color: HomeCategoryCubit.get(context).currentIndex == 0 ? defaultColor : Color(0xffF2F2F2))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(1.5),
+                              child: Center(
+                                child: Text(
+                                  'a'.tr(),
+                                  style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w500),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        AutoSizeText(
-                          'All Restaurant',
-                          minFontSize: 9,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: HomeCategoryCubit.get(context).currentIndex == 0?defaultColor:null),
-                        ),
-                      ],
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          AutoSizeText(
+                            'all_restaurant'.tr(),
+                            minFontSize: 9,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: HomeCategoryCubit.get(context).currentIndex == 0?defaultColor:null),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  if(!widget.isRestaurant&&!widget.isSearch)
-                    const SizedBox(
-                    width: 25,
-                  ),
-                  Expanded(
-                    child: SizedBox(
+                    if(!widget.isRestaurant&&!widget.isSearch)
+                      const SizedBox(
+                      width: 25,
+                    ),
+                    SizedBox(
                       height: 90,
                       child: ListView.separated(
                           itemBuilder: (context,index)=>categoryItem(
@@ -111,13 +112,15 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                                   ?index+1
                                   :index
                           ),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
                           separatorBuilder: (c,i)=>const SizedBox(width: 25,),
                           scrollDirection: Axis.horizontal,
                           itemCount: widget.data!.length
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ));
   }

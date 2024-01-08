@@ -7,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:safri/models/ads_model.dart';
+import 'package:safri/shared/network/local/cache_helper.dart';
 import 'package:safri/shared/network/remote/end_point.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../../models/category_model.dart';
@@ -50,17 +51,22 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
 
 
   Future<void> getCurrentLocation() async {
-    emit(GetCurrentLocationLoadingState());
+    //emit(GetCurrentLocationLoadingState());
     await checkPermissions();
     await Geolocator.getLastKnownPosition().then((value) {
       if (value != null) {
         print("valuevalue");
         print(value);
         position = LatLng(value.latitude, value.longitude);
+        CacheHelper.saveData(key: 'lat', value: value.latitude);
+        CacheHelper.saveData(key: 'lng', value: value.longitude);
         print(position);
-        getAddress(position!);
+        Future.delayed(Duration(milliseconds: 2500),(){
+         getAddress(position!);
          getProviderCategory();
-        emit(GetCurrentLocationState());
+        });
+
+        //emit(GetCurrentLocationState());
       }
     });
   }

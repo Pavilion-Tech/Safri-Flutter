@@ -383,6 +383,9 @@ class FastCubit extends Cubit<FastStates>{
     emit(AddToCartLoadingState());
     DioHelper.deleteData(
         url: '$deleteCartUrl$cartId',
+        data: {
+          'mobile_MAC_address':fcmToken,
+        },
         token:'Bearer $token',
     ).then((value) {
       if(value.data['status']==true){
