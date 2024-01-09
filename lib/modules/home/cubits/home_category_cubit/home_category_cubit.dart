@@ -28,16 +28,23 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   String categoryId = '';
   TextEditingController locationController = TextEditingController();
 
-  // void init()async{
-  //   if(lat!=null){
-  //     position = LatLng(lat!, lng!);
-  //     getAddress(position!);
-  //   }else{
-  //     getCurrentLocation();
-  //   }
-  //
-  //
-  // }
+  void init(context)async{
+    lat = CacheHelper.getData(key: 'lat');
+    lng = CacheHelper.getData(key: 'lng');
+    if(HomeCategoryCubit.get(context).categoriesModel?.data?.isEmpty??true)
+    {
+      print("theeeeee");
+      print("HomeCategoryCubit.get(context).categoriesModel?.data?.");
+      print(HomeCategoryCubit.get(context).categoriesModel?.data?.length);
+      HomeCategoryCubit.get(context).getCategory();
+    }
+    if(lat!=null){
+      HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
+      HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
+    }else{
+      HomeCategoryCubit.get(context).getCurrentLocation();
+    }
+  }
   final ItemScrollController itemScrollController = ItemScrollController();
   /// auto scroll down
   // Future _scrollToIndex() async {

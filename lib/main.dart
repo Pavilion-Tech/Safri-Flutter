@@ -32,7 +32,7 @@ void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   try{
     await Firebase.initializeApp(
-         //options: DefaultFirebaseOptions.currentPlatform
+         options: DefaultFirebaseOptions.currentPlatform
     );
     Messaging.initFCM();
     await FirebaseMessaging.instance.requestPermission();
@@ -45,8 +45,6 @@ void main()async {
   DioHelper.init();
   DioHelper1.init();
   await CacheHelper.init();
-  lat = CacheHelper.getData(key: 'lat');
-  lng = CacheHelper.getData(key: 'lng');
   id = CacheHelper.getData(key: 'id');
    token = CacheHelper.getData(key: 'token');
     print("token");
@@ -92,7 +90,7 @@ class MyApp extends StatelessWidget {
         statusBarIconBrightness: Brightness.dark));
     return MultiBlocProvider(
         providers:[
-          BlocProvider(create:(context)=> HomeCategoryCubit() ),
+          BlocProvider(create:(context)=> HomeCategoryCubit()),
           BlocProvider(create:(context)=> FastCubit()..checkInterNet()..init() ),
           BlocProvider(create:(context)=> MenuCubit()..checkInterNet()..init()),
           BlocProvider(create:(context)=> AuthCubit()..checkInterNet()),

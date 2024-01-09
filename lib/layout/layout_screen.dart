@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safri/layout/cubit/cubit.dart';
 import 'package:safri/layout/cubit/states.dart';
+import 'package:safri/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'package:safri/modules/menu/cubit/menu_cubit.dart';
 import 'package:safri/modules/menu/cubit/menu_states.dart';
 import 'package:safri/modules/worng_screenss/maintenance_screen.dart';
@@ -71,6 +72,7 @@ class _FastLayoutState extends State<FastLayout> {
   @override
   Widget build(BuildContext context) {
     FastCubit.get(context).checkUpdate(context);
+    HomeCategoryCubit.get(context).init(context);
     return BlocConsumer<FastCubit, FastStates>(
       listener: (c, s) {
         if(isConnect!=null)checkNet(context);

@@ -39,19 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.initState();
       // HomeCategoryCubit.get(context).init();
-     if(HomeCategoryCubit.get(context).categoriesModel?.data?.isEmpty??true)
-       {
-         print("theeeeee");
-         print("HomeCategoryCubit.get(context).categoriesModel?.data?.");
-         print(HomeCategoryCubit.get(context).categoriesModel?.data?.length);
-         HomeCategoryCubit.get(context).getCategory();
-       }
-    if(lat!=null){
-      HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
-      HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
-    }else{
-      HomeCategoryCubit.get(context).getCurrentLocation();
-    }
 
     show();
   }
