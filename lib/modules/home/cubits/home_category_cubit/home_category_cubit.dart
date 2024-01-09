@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:safri/models/ads_model.dart';
 import 'package:safri/shared/network/local/cache_helper.dart';
 import 'package:safri/shared/network/remote/end_point.dart';
@@ -50,9 +51,9 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   // }
 
 
-  Future<void> getCurrentLocation() async {
+  Future<void> getCurrentLocation({bool isHome = true}) async {
     //emit(GetCurrentLocationLoadingState());
-    await checkPermissions();
+    await checkPermissions(isHome: isHome);
     await Geolocator.getLastKnownPosition().then((value) {
       if (value != null) {
         print("valuevalue");
@@ -62,31 +63,34 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         CacheHelper.saveData(key: 'lng', value: value.longitude);
         print(position);
         Future.delayed(Duration(milliseconds: 2500),(){
-         getAddress(position!);
-         getProviderCategory();
+          getAddress(position!);
+          getProviderCategory();
+
         });
 
         //emit(GetCurrentLocationState());
       }
     });
   }
-  Future<Position> checkPermissions() async {
+  Future<Position> checkPermissions({bool isHome = true}) async {
     bool isServiceEnabled = await Geolocator.isLocationServiceEnabled();
     LocationPermission permission = await Geolocator.checkPermission();
     if (!isServiceEnabled) {}
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
+      if(!isHome) openAppSettings();
       if (permission == LocationPermission.denied) {
         showToast(msg: 'Location permissions are denied', toastState: false);
-        emit(GetCurrentLocationState());
+        if(!isHome) openAppSettings();
         return Future.error('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      showToast(msg: 'Location permissions are permanently denied, we cannot request permissions.', toastState: false);
+      showToast(msg: 'Location permissions are permanently denied, we cannot request permissions , go to setting', toastState: false);
       //await Geolocator.openLocationSettings();
-      emit(GetCurrentLocationState());
+     // emit(GetCurrentLocationState());
+      if(!isHome) openAppSettings();
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
     }

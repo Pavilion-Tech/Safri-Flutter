@@ -187,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: EdgeInsets.symmetric(vertical: 15),
             child: InkWell(
               onTap: (){
-                HomeCategoryCubit.get(context).getCurrentLocation();
+                HomeCategoryCubit.get(context).getCurrentLocation(isHome: false);
                 navigateTo(context, MapScreen());
               },
               child: Row(

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:safri/layout/cubit/cubit.dart';
 import 'package:safri/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'package:safri/modules/menu/cubit/fav_provider_cubit/fav_provider_state.dart';
@@ -12,6 +13,7 @@ import '../../../../shared/components/components.dart';
 import '../../../../shared/components/constant.dart';
 import '../../../../shared/components/uti.dart';
 import '../../../../shared/images/images.dart';
+import '../../../../shared/styles/colors.dart';
 import '../../../../widgets/item_shared/image_net.dart';
 import '../../../../widgets/item_shared/provider_item.dart';
 import '../../../../widgets/shimmer/notification_shimmer.dart';
@@ -190,6 +192,23 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                                 ),
                                               ],
                                             ),
+                                            const Spacer(),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  print("widget.providerData.isFavorited");
+                                                  print(data.isFavorited);
+                                                  print(data.id);
+                                                  FastCubit.get(context).addRemoveProviderFromFavorite(favoritedProviderId: data.id.toString());
+                                                  FavoriteProvidersCubit.get(context).getFavoriteProviders();
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsetsDirectional.only(end: 10),
+                                                  child: SvgPicture.asset(
+                                                    Images.fav,
+                                                    width: 20,
+                                                    color: data.isFavorited == true ? defaultColor : Colors.grey,
+                                                  ),
+                                                )),
                                             // SizedBox(width: size!.width*.02,),
 
                                           ],

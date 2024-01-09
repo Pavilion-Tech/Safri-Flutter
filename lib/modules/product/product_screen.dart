@@ -200,11 +200,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         ],
                       ),
                     ),
-
+                    if(productData.opeingStatus!= 'closed')
                     BlocConsumer<FastCubit, FastStates>(
-                      listener: (context, state) {
-
-                      },
+                      listener: (context, state) {},
                       builder: (context, state) {
                         return ConditionalBuilder(
                           condition: state is! AddToCartLoadingState,
@@ -264,7 +262,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       children: [
                                         InkWell(
                                           onTap: (){
-
+                                            print('productData.opeingStatus ${productData.opeingStatus}');
                                             quantity++;
                                             FastCubit.get(context).emitState();
                                           },
