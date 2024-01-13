@@ -72,7 +72,6 @@ class _FastLayoutState extends State<FastLayout> {
   @override
   Widget build(BuildContext context) {
     FastCubit.get(context).checkUpdate(context);
-    HomeCategoryCubit.get(context).init(context);
     return BlocConsumer<FastCubit, FastStates>(
       listener: (c, s) {
         if(isConnect!=null)checkNet(context);

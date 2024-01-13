@@ -22,10 +22,10 @@ class MapScreen extends StatelessWidget {
       HomeCategoryCubit.get(context).position=LatLng(25.2048,55.2708);
       HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
     }
-    if(lat!=null){
-      HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
-      HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
-    }
+    // if(lat!=null){
+    //   HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
+    //   HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
+    // }
     return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -51,14 +51,14 @@ class MapScreen extends StatelessWidget {
                     target:LatLng(
                         cubit.position?.latitude??25.2048,cubit.position?.longitude??55.2708
                     ),
-                    zoom: 5
+                    zoom: 14
                   ),
                 onTap: (latLng){
                   cubit.position = latLng;
                   cubit.getAddress(latLng);
                 },
                 myLocationEnabled: true,
-                zoomGesturesEnabled: false,
+                zoomGesturesEnabled: true,
               ),
               SafeArea(
                 child: Padding(
@@ -84,10 +84,10 @@ class MapScreen extends StatelessWidget {
                       DefaultButton(
                           text: tr('done'),
                           onTap: (){
-                            lat = cubit.position!.latitude;
-                            lng = cubit.position!.longitude;
-                            CacheHelper.saveData(key: 'lat', value: lat);
-                            CacheHelper.saveData(key: 'lng', value: lng);
+                            // lat = cubit.position!.latitude;
+                            // lng = cubit.position!.longitude;
+                            // CacheHelper.saveData(key: 'lat', value: lat);
+                            // CacheHelper.saveData(key: 'lng', value: lng);
                             cubit.getProviderCategory();
                             Navigator.pop(context);
                           }
@@ -98,10 +98,10 @@ class MapScreen extends StatelessWidget {
                           textColor: defaultColor,
                           color: Colors.white,
                           onTap: (){
-                            lat = null;
-                            lng = null;
-                            CacheHelper.removeData('lat');
-                            CacheHelper.removeData('lng');
+                            // lat = null;
+                            // lng = null;
+                            // CacheHelper.removeData('lat');
+                            // CacheHelper.removeData('lng');
                             cubit.position = null;
                             cubit.locationController.text = '';
                             cubit.getProviderCategory();

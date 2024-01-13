@@ -81,6 +81,8 @@ class ProviderItem extends StatelessWidget {
                       const SizedBox(width: 5,),
                       AutoSizeText(
                         tr(providerData?.openStatus??'open'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 10,color: providerData?.openStatus == 'open'? Color(0xff57E500):Color(0xffE51C00)),
                       ),
                       SizedBox(width: size!.width*.02,),
@@ -102,6 +104,7 @@ class ProviderItem extends StatelessWidget {
                         '${providerData!.totalRate??0} (${providerData!.totalRateCount})',
                         maxLines: 1,
                         minFontSize: 5,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 10,color: Colors.grey),
                       ),
                       SizedBox(width: size!.width*.01,),
@@ -113,6 +116,7 @@ class ProviderItem extends StatelessWidget {
                         AutoSizeText(
                           providerData?.distance??"",
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           minFontSize: 5,
                           style: TextStyle(fontSize: 10,color: Colors.grey),
                         ),
@@ -125,13 +129,15 @@ class ProviderItem extends StatelessWidget {
                       children: [
                               AutoSizeText(
                                '${providerData!.duration??''} | ',
-                              maxLines: 1,
-                              minFontSize: 5,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                minFontSize: 5,
                               style: TextStyle(fontSize: 10,color: Colors.grey),
                               ), AutoSizeText(
                                providerData?.crowdedStatus ==1 ?tr('crowded'):tr('not_crowded'),
-                              maxLines: 1,
-                              minFontSize: 5,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          minFontSize: 5,
                               style: TextStyle(fontSize: 10,color:Color(0xff4B4B4B)),
                               ),
                              ],

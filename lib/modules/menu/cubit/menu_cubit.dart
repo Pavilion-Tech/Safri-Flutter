@@ -330,8 +330,8 @@ class MenuCubit extends Cubit<MenuStates>{
     id = null;
     CacheHelper.removeData('id');
     CacheHelper.removeData('token');
-    CacheHelper.removeData('lat');
-    CacheHelper.removeData('long');
+    // CacheHelper.removeData('lat');
+    // CacheHelper.removeData('lng');
     navigateAndFinish(context, SplashScreen());
   }
 

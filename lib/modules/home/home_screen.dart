@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    HomeCategoryCubit.get(context).init(context);
     return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
       listener: (context, state) {},
       builder: (context, state) {

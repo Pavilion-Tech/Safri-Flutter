@@ -20,169 +20,152 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 140,
-      child: Stack(
-        children: [
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: Container(
-              width: 140,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadiusDirectional.circular(27),
-                color: Colors.grey.shade300,
-              ),
-              alignment: AlignmentDirectional.centerEnd,
-              padding: EdgeInsetsDirectional.only(end: 10),
-              child:InkWell(
-                onTap: (){
-                  FastCubit.get(context).deleteCart(cartId: data.id??'');
-                },
-                child: Image.asset(Images.bin,width: 35,height: 35,color: Colors.red,),
-              ) ,
-            ),
+      width: size!.width*.78,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadiusDirectional.circular(27),
+          color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade100,
+            blurRadius: 20,
+          ),   BoxShadow(
+            color: Colors.grey.shade200,
+            blurRadius: 20,
           ),
+        ]
+      ),
+      child: Row(
+        children: [
           Container(
-            height: 140,
-            width: size!.width*.78,
+            height: 140,width: 135,
             decoration: BoxDecoration(
-                borderRadius: BorderRadiusDirectional.circular(27),
-                color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade100,
-                  blurRadius: 20,
-                ),   BoxShadow(
-                  color: Colors.grey.shade200,
-                  blurRadius: 20,
-                ),
-              ]
+              borderRadius:BorderRadiusDirectional.circular(27),
             ),
-            child: Row(
-              children: [
-                Container(
-                  height: 140,width: 135,
-                  decoration: BoxDecoration(
-                    borderRadius:BorderRadiusDirectional.circular(27),
-                  ),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: ImageNet(image: data.productImage??'',fit: BoxFit.cover,),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AutoSizeText(
-                        data.productTitle??'',
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: ImageNet(image: data.productImage??'',fit: BoxFit.cover,),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  AutoSizeText(
+                  data.productTitle??'',
 
-                          minFontSize: 8,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        if(data.extras!.isNotEmpty)
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children:data.extras!.map((e) => AutoSizeText(
-                              '${e.selectedExtraName??''} , ',
-                              minFontSize: 8,
-                              maxLines: 1,
-                              style: TextStyle(fontSize: 12),
-                            ),).toList(),
-                          ),
-                        ),
-                        AutoSizeText(
-                          '${data.productPrice??'0'} ${tr("KWD")}',
-                          minFontSize: 8,
-                          maxLines: 1,
-                          style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
-                        ),
-                        Container(
-                          height: 34,width: 130,
-                          // decoration: BoxDecoration(
-                          //   borderRadius: BorderRadiusDirectional.circular(58),
-                          //   color: defaultColor.withOpacity(.3)
-                          // ),
-                          padding:const EdgeInsets.symmetric(horizontal: 0),
-                          child: ConditionalBuilder(
-                            condition: FastCubit.get(context).cartId != data.id,
-                            fallback: (c)=>const CupertinoActivityIndicator(),
-                            builder: (c)=> Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    print(data.quantity);
-                                    int quantity = int.tryParse(data.quantity!)! +1;
-                                    FastCubit.get(context).updateCart(
-                                        productId: data.id??'',
-                                        quantity: quantity
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 34,width: 34,
-                                    decoration: BoxDecoration(
-                                     shape: BoxShape.circle,
-                                      color: defaultColor
-                                    ),
-                                    alignment: AlignmentDirectional.center,
-                                    child: const AutoSizeText(
-                                      '+',
-                                      minFontSize: 8,
-                                      maxLines: 1,
-                                      style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white,height: 2),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 8,),
-                                AutoSizeText(
-                                  '${ data.quantity??''}',
-                                  minFontSize: 8,
-                                  maxLines: 1,
-                                  style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
-                                ),
-                                SizedBox(width: 8,),
-                                InkWell(
-                                    onTap: (){
-                                      if(int.parse(data.quantity??"1") != 1){
-                                        int quantity = int.tryParse(data.quantity!)! -1;
-                                        FastCubit.get(context).updateCart(
-                                            productId: data.id??'',
-                                            quantity: quantity
-                                        );
-                                      }
-                                    },
-                                    child:Container(
-                                      height: 34,width: 34,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:Colors.red
-                                      ),
-                                      alignment: AlignmentDirectional.center,
-                                      child: const AutoSizeText(
-                                        '-',
-                                        minFontSize: 8,
-                                        maxLines: 1,
-                                        style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                    minFontSize: 8,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  if(data.extras!.isNotEmpty)
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children:data.extras!.map((e) => AutoSizeText(
+                        '${e.selectedExtraName??''} , ',
+                        minFontSize: 8,
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 12),
+                      ),).toList(),
                     ),
                   ),
-                ),
-              ],
+                  AutoSizeText(
+                    '${data.productPrice??'0'} ${tr("KWD")}',
+                    minFontSize: 8,
+                    maxLines: 1,
+                    style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),
+                  ),
+                  Container(
+                    height: 34,width: 130,
+                    // decoration: BoxDecoration(
+                    //   borderRadius: BorderRadiusDirectional.circular(58),
+                    //   color: defaultColor.withOpacity(.3)
+                    // ),
+                    padding:const EdgeInsets.symmetric(horizontal: 0),
+                    child: ConditionalBuilder(
+                      condition: FastCubit.get(context).cartId != data.id,
+                      fallback: (c)=>const CupertinoActivityIndicator(),
+                      builder: (c)=> Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: (){
+                              print(data.quantity);
+                              int quantity = int.tryParse(data.quantity!)! +1;
+                              FastCubit.get(context).updateCart(
+                                  productId: data.id??'',
+                                  quantity: quantity
+                              );
+                            },
+                            child: Container(
+                              height: 34,width: 34,
+                              decoration: BoxDecoration(
+                               shape: BoxShape.circle,
+                                color: defaultColor
+                              ),
+                              alignment: AlignmentDirectional.center,
+                              child: const AutoSizeText(
+                                '+',
+                                minFontSize: 8,
+                                maxLines: 1,
+                                style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white,height: 2),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8,),
+                          AutoSizeText(
+                            '${ data.quantity??''}',
+                            minFontSize: 8,
+                            maxLines: 1,
+                            style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500),
+                          ),
+                          SizedBox(width: 8,),
+                          InkWell(
+                              onTap: (){
+                                if(int.parse(data.quantity??"1") != 1){
+                                  int quantity = int.tryParse(data.quantity!)! -1;
+                                  FastCubit.get(context).updateCart(
+                                      productId: data.id??'',
+                                      quantity: quantity
+                                  );
+                                }
+                              },
+                              child:Container(
+                                height: 34,width: 34,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color:Colors.red
+                                ),
+                                alignment: AlignmentDirectional.center,
+                                child: const AutoSizeText(
+                                  '-',
+                                  minFontSize: 8,
+                                  maxLines: 1,
+                                  style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
+          InkWell(
+            onTap: (){
+              FastCubit.get(context).deleteCart(cartId: data.id??'');
+            },
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(end: 20),
+              child: Image.asset(Images.bin,width: 25,height: 25,color: Colors.red,),
+            ),
+          )
         ],
       ),
     );

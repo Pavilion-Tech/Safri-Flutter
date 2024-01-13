@@ -29,8 +29,8 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   TextEditingController locationController = TextEditingController();
 
   void init(context)async{
-    lat = CacheHelper.getData(key: 'lat');
-    lng = CacheHelper.getData(key: 'lng');
+    // lat = CacheHelper.getData(key: 'lat');
+    // lng = CacheHelper.getData(key: 'lng');
     if(HomeCategoryCubit.get(context).categoriesModel?.data?.isEmpty??true)
     {
       print("theeeeee");
@@ -38,12 +38,12 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
       print(HomeCategoryCubit.get(context).categoriesModel?.data?.length);
       HomeCategoryCubit.get(context).getCategory();
     }
-    if(lat!=null){
-      HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
-      HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
-    }else{
-      HomeCategoryCubit.get(context).getCurrentLocation();
-    }
+    // if(lat!=null&&lng!=null){
+    //   HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
+    //   HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
+    // }else{
+    //   HomeCategoryCubit.get(context).getCurrentLocation();
+    // }
   }
   final ItemScrollController itemScrollController = ItemScrollController();
   /// auto scroll down
@@ -66,9 +66,8 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         print("valuevalue");
         print(value);
         position = LatLng(value.latitude, value.longitude);
-        CacheHelper.saveData(key: 'lat', value: value.latitude);
-        CacheHelper.saveData(key: 'lng', value: value.longitude);
-        print(position);
+        // CacheHelper.saveData(key: 'lat', value: value.latitude);
+        // CacheHelper.saveData(key: 'lng', value: value.longitude);
         Future.delayed(Duration(milliseconds: 2500),(){
           getAddress(position!);
           getProviderCategory();
