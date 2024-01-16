@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,6 +17,7 @@ import '../../widgets/item_shared/category_widget.dart';
 import '../../widgets/item_shared/provider_item.dart';
 import '../../widgets/shimmer/default_list_shimmer.dart';
 import '../../widgets/shimmer/home_shimmer.dart';
+import 'cubits/ads_cubit/ads_cubit.dart';
 import 'map_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
       // HomeCategoryCubit.get(context).init();
 
+
     show();
   }
 
@@ -59,10 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     HomeCategoryCubit.get(context).init(context);
+    AdsCubit.get(context).getAds();
     return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = HomeCategoryCubit.get(context);
+        cubit.paginationAllProvider();
         return SafeArea(
           child: Column(
             children: [
@@ -70,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: ListView(
                   shrinkWrap: true,
-                  // controller: HomeCategoryCubit.get(context).controllerScroll,
+                  // controller: HomeCategoryCubit.get(context).controllerScrnoll,
+                  controller: cubit.currentIndex==0?cubit.allProviderScrollController:null,
                   children: [
                     HomeSlider(closeTop),
                     if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategoryLoadingState)
@@ -92,7 +98,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     if (cubit.providerCategoryModel==null && state is ProviderCategoryLoadingState)
                       DefaultListShimmer(),
-                      if (cubit.providerCategoryModel?.data?.data?.length ==0  && state is ProviderCategorySuccessState)
+                      if (cubit.providerCategoryModel?.data?.data?.length ==0
+                          && state is ProviderCategorySuccessState)
+                      Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
+                        maxLines: 1,)),
+                    if (cubit.allProviderModel?.data?.data?.length ==0
+                          && state is ProviderCategorySuccessState)
                       Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
                         maxLines: 1,)),
                       if (state is ProviderCategoryErrorState)
@@ -113,6 +124,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                           ),
+                        ],
+                      ),
+
+                    if (cubit.allProviderModel?.data?.data?.isNotEmpty??true )
+                      Stack(
+                        alignment: AlignmentDirectional.bottomCenter,
+                        children: [
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (c, i) => ProviderItem(providerData: cubit.allProviderModel!.data!.data![i]),
+                            separatorBuilder: (c, i) => const SizedBox(
+                              height: 20,
+                            ),
+                            itemCount: cubit.allProviderModel?.data?.data?.length??0,
+                            padding: const EdgeInsets.only(left: 20,right: 20,bottom: 30),
+                          ),
+                          if (state is ProviderCategoryLoadingState) Center(child: CupertinoActivityIndicator()),
+
                         ],
                       )
 
@@ -174,8 +204,8 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 15),
             child: InkWell(
-              onTap: (){
-                HomeCategoryCubit.get(context).getCurrentLocation(isHome: false);
+              onTap: ()async{
+                await HomeCategoryCubit.get(context).getCurrentLocation(isHome: false);
                 navigateTo(context, MapScreen());
               },
               child: Row(

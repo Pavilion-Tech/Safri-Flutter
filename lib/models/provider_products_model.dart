@@ -42,7 +42,7 @@ class ProductData {
   String? categoryId;
   String? opeingStatus;
   String? categoryOrderDaysType;
-  int? totalRate;
+  dynamic totalRate;
   bool? isFavorited;
   List<Reviews>? reviews;
   List<Types>? types;
@@ -118,7 +118,7 @@ class ProviderId {
 class Reviews {
   String? id;
   String? userName;
-  int? rate;
+  dynamic rate;
   String? content;
 
   Reviews.fromJson(Map<String, dynamic> json) {
@@ -149,7 +149,7 @@ class Sizes {
 class Types {
   String? id;
   String? name;
-  int? price;
+  dynamic price;
 
   Types.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -162,7 +162,7 @@ class Types {
 class Extra {
   String? id;
   String? name;
-  int? price;
+  dynamic price;
 
 
   Extra.fromJson(Map<String, dynamic> json) {

@@ -65,7 +65,7 @@ class DeleteCartDialog extends StatelessWidget {
                         navigateAndFinish(context, FastLayout());
                       },
                       child: Text(
-                        tr('continue_shopping'),
+                        tr('cart'),
                         style: TextStyle(
                             color: defaultColor,
                             fontSize: 15,

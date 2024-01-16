@@ -37,7 +37,8 @@ class _SearchScreenState extends State<SearchScreen> {
     });
 
     super.initState();
-    HomeCategoryCubit.get(context).currentIndex=0;
+    HomeCategoryCubit.get(context).currentIndex=123;
+    HomeCategoryCubit.get(context).categorySearchId='';
     HomeCategoryCubit.get(context).searchController.clear();
     HomeCategoryCubit.get(context).categoriesModel=null;
 
@@ -64,11 +65,8 @@ class _SearchScreenState extends State<SearchScreen> {
             onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
             overlayColor: MaterialStateProperty.all(Colors.transparent),
             child: SafeArea(
-              child:
-
-              Column(
+              child: Column(
                 children: [
-
                   Expanded(
                     child: ListView(
                       shrinkWrap: true,
@@ -88,6 +86,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 cubit.getProviderCategorySearch(search: str);
                               }else{
                                 cubit.providerCategorySearchModel = null;
+                                HomeCategoryCubit.get(context).getProviderCategorySearch(search: HomeCategoryCubit.get(context).searchController.text);
                                 cubit.emitState();
                               }
                             },

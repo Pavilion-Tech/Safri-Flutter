@@ -67,9 +67,7 @@ class _RestaurantScreenState extends State<RestaurantScreen>with SingleTickerPro
             // }
             return Column(
               children: [
-
-                  RestaurantAppBar(tabController: _tabController, cubit: cubit),
-
+                RestaurantAppBar(tabController: _tabController, cubit: cubit),
                 Expanded(
                   child: TabBarView(
                       controller: _tabController,

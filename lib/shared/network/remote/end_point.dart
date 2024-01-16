@@ -28,6 +28,7 @@ const String addRemoveProviderFromFav  = 'user/add-remove-provider-from-favorite
 const String couponUrl = 'coupouns/apply-coupoun';
 const String checkOrderStatus = 'orders/complete-online-order/';
 const String singleProviderUrl = 'provider/single-provider/';
+const String allProviderUrl = 'provider/all-providers?limit=20&page=';
 
 
 

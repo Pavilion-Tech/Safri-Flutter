@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:safri/widgets/restaurant/all_reviews_dialog.dart';
 
@@ -11,6 +12,8 @@ import '../../../shared/network/local/cache_helper.dart';
 import '../../../shared/styles/colors.dart';
 import '../../../widgets/item_shared/image_net.dart';
 import '../../../widgets/restaurant/branche_bottom_sheet.dart';
+import '../../home/cubits/home_category_cubit/home_category_cubit.dart';
+import '../../home/cubits/home_category_cubit/home_category_states.dart';
 
 class RestaurantAppBar extends StatelessWidget {
   final  FastCubit cubit;
@@ -24,19 +27,29 @@ class RestaurantAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     context.locale;
+    return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
+  listener: (context, state) {},
+  builder: (context, state) {
+    var categoryCubit = HomeCategoryCubit.get(context);
     return Container(
 
-      height: size!.height * .3 + 100,
+      height:categoryCubit.currentIndex!=0?120: size!.height * .3 + 100,
       child: Stack(
         alignment: AlignmentDirectional.bottomCenter,
         children: [
-          Positioned(
-            top: 0,
-            bottom: 90, // to shift little up
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 300,
+          // Positioned(
+          //   top: 0,
+          //   bottom: 90, // to shift little up
+          //   left: 0,
+          //   right: 0,
+          //   child: ,
+          // ),
+          Align(
+            alignment: AlignmentDirectional.topCenter,
+            child: AnimatedContainer(
+              height: categoryCubit.currentIndex!=0?0:300,
+              duration: Duration(milliseconds: 500),
+              curve: Curves.bounceInOut,
               width: double.infinity,
               decoration:const BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -48,8 +61,11 @@ class RestaurantAppBar extends StatelessWidget {
               child: ImageNet(image:cubit.singleProviderModel?.data?.personalPhoto??'',fit: BoxFit.cover,),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 15,right: 20,left: 20),
+          if(categoryCubit.currentIndex==0)
+            Padding(
+            padding: EdgeInsets.only(
+            top: categoryCubit.currentIndex!=0?120:0,
+                bottom: 15,right: 20,left: 20),
             child: Container(
               width: double.infinity,
               height: 210,
@@ -130,7 +146,6 @@ class RestaurantAppBar extends StatelessWidget {
                                 const SizedBox(width: 10,)
                               ],
                             ),
-
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -176,7 +191,9 @@ class RestaurantAppBar extends StatelessWidget {
                     height: 1,width: double.infinity,
                     color: Color(0xff6E6E6E),
                   ),
-                  SizedBox(height: 5,),
+                  if(categoryCubit.currentIndex==0)
+                    SizedBox(height: 5,),
+                  if(categoryCubit.currentIndex==0)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child:Container(
@@ -348,5 +365,7 @@ class RestaurantAppBar extends StatelessWidget {
         ],
       ),
     );
+  },
+);
   }
 }

@@ -29,21 +29,6 @@ class CategoryWidget extends StatefulWidget {
 class _CategoryWidgetState extends State<CategoryWidget> {
 
   bool isShowMore=false;
-  @override
-  void initState() {
-    if (widget.isSearch) {
-      if (widget.data != null) {
-        HomeCategoryCubit.get(context).categorySearchId = widget.data![0].id ?? '';
-        FastCubit.get(context).emitState();
-      }
-    }
-    if(!widget.isSearch&&!widget.isRestaurant){
-      setState(() {
-        HomeCategoryCubit.get(context).currentIndex = 0;
-      });
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +45,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     if(!widget.isRestaurant&&!widget.isSearch)
                     InkWell(
                       onTap: () {
-                        setState(() {
-                          HomeCategoryCubit.get(context).currentIndex = 0;
-                        });
+                        HomeCategoryCubit.get(context).currentIndex = 0;
+                        HomeCategoryCubit.get(context).categoryId='';
+                        HomeCategoryCubit.get(context).providerCategoryModel=null;
+                        HomeCategoryCubit.get(context).allProviderModel=null;
+                        HomeCategoryCubit.get(context).paginationAllProvider();
+                        HomeCategoryCubit.get(context).getAllProvider();
                       },
                       overlayColor: MaterialStateProperty.all(Colors.transparent),
                       child: Column(
@@ -110,7 +98,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                               widget.data![index],
                               !widget.isRestaurant&&!widget.isSearch
                                   ?index+1
-                                  :index
+                                  :index,context
                           ),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -125,37 +113,35 @@ class _CategoryWidgetState extends State<CategoryWidget> {
             ));
   }
 
-  Widget categoryItem(CategoryData category, int index) {
+  Widget categoryItem(CategoryData category, int index,BuildContext context) {
     return InkWell(
       onTap: () {
-        setState(() {
-          if (widget.isSearch) {
+        if (widget.isSearch) {
+          if(HomeCategoryCubit.get(context).categorySearchId.isNotEmpty){
+            HomeCategoryCubit.get(context).currentIndex = 123;
+          }else{
             HomeCategoryCubit.get(context).currentIndex = index;
-            HomeCategoryCubit.get(context).categorySearchId = category.id ?? '';
-            HomeCategoryCubit.get(context).providerCategorySearchModel=null;
-            HomeCategoryCubit.get(context).getProviderCategorySearch(search: HomeCategoryCubit.get(context).searchController.text.isNotEmpty?
-            HomeCategoryCubit.get(context).searchController.text:"");
-            FastCubit.get(context).emitState();
           }
-          else if (widget.isRestaurant) {
-            widget.itemScrollController!.scrollTo(index: index, duration: Duration(seconds: 1));
-            FastCubit.get(context).providerProductId = category.id ?? '';
-            FastCubit.get(context).getAllProducts();
-          }
-          else {
-            HomeCategoryCubit.get(context).currentIndex = index;
-            HomeCategoryCubit.get(context).categoryId = category.id ?? '';
-            HomeCategoryCubit.get(context).categorySearchId = category.id ?? '';
-            print("HomeCategoryCubit.get(context).categoryId ");
-            print(HomeCategoryCubit.get(context).categoryId );
-            HomeCategoryCubit.get(context).providerCategoryModel=null;
+          HomeCategoryCubit.get(context).categorySearchId
+          = HomeCategoryCubit.get(context).categorySearchId.isNotEmpty?'':category.id ?? '';
+          HomeCategoryCubit.get(context).providerCategorySearchModel=null;
+          HomeCategoryCubit.get(context).getProviderCategorySearch(search: HomeCategoryCubit.get(context).searchController.text);
+          FastCubit.get(context).emitState();
+        }
+        else if (widget.isRestaurant) {
+          widget.itemScrollController!.scrollTo(index: index, duration: Duration(seconds: 1));
+          FastCubit.get(context).providerProductId = category.id ?? '';
+          FastCubit.get(context).getAllProducts();
+        }
+        else {
+          HomeCategoryCubit.get(context).currentIndex = index;
+          HomeCategoryCubit.get(context).categoryId = category.id ?? '';
+          HomeCategoryCubit.get(context).providerCategoryModel=null;
+          HomeCategoryCubit.get(context).allProviderModel=null;
+          HomeCategoryCubit.get(context).allProviderScrollController.removeListener((){});
+          HomeCategoryCubit.get(context).getProviderCategory();
 
-
-            HomeCategoryCubit.get(context).getProviderCategory();
-
-          }
-
-        });
+        }
       },
       overlayColor: MaterialStateProperty.all(Colors.transparent),
       child: Column(

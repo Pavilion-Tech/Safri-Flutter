@@ -315,7 +315,6 @@ class FastCubit extends Cubit<FastStates>{
         }
     ).then((value) {
       if(value.data['status']==true){
-        this.cartId = '';
         showToast(msg: value.data['message']);
         getAllCarts();
       }else{
@@ -345,7 +344,8 @@ class FastCubit extends Cubit<FastStates>{
       if(value.data['status']==true&&value.data['data']!=null){
         // if(page == 1) {
           cartModel = CartModel.fromJson(value.data);
-        // }
+          this.cartId = '';
+          // }
         // else{
         //   cartModel!.data!.currentPage = value.data['data']['currentPage'];
         //   cartModel!.data!.pages = value.data['data']['pages'];

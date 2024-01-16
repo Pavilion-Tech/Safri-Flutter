@@ -34,16 +34,13 @@ class _HomeSliderState extends State<HomeSlider> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    AdsCubit.get(context).getAds();
   }
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 20.0,left: 20.0,bottom: 20.0),
       child: BlocConsumer<AdsCubit, AdsStates>(
-        listener: (context, state) {
-
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           var adsCubit = AdsCubit.get(context);
           if (adsCubit.adsModel ==null && state is GetAdsLoadingState) {

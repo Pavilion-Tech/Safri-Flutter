@@ -31,18 +31,17 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   void init(context)async{
     // lat = CacheHelper.getData(key: 'lat');
     // lng = CacheHelper.getData(key: 'lng');
+    HomeCategoryCubit.get(context).currentIndex = 0;
     if(HomeCategoryCubit.get(context).categoriesModel?.data?.isEmpty??true)
     {
-      print("theeeeee");
-      print("HomeCategoryCubit.get(context).categoriesModel?.data?.");
-      print(HomeCategoryCubit.get(context).categoriesModel?.data?.length);
       HomeCategoryCubit.get(context).getCategory();
     }
+    HomeCategoryCubit.get(context).getCurrentLocation(isHome: true);
     // if(lat!=null&&lng!=null){
     //   HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
-    //   HomeCategoryCubit.get(context).getAddress(HomeCategoryCubit.get(context).position!);
+    //
     // }else{
-    //   HomeCategoryCubit.get(context).getCurrentLocation();
+    //
     // }
   }
   final ItemScrollController itemScrollController = ItemScrollController();
@@ -68,12 +67,12 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         position = LatLng(value.latitude, value.longitude);
         // CacheHelper.saveData(key: 'lat', value: value.latitude);
         // CacheHelper.saveData(key: 'lng', value: value.longitude);
-        Future.delayed(Duration(milliseconds: 2500),(){
+        Future.delayed(Duration(seconds: 2),(){
           getAddress(position!);
+          allProviderModel = null;
+          allProviderScrollController.removeListener(() { });
           getProviderCategory();
-
         });
-
         //emit(GetCurrentLocationState());
       }
     });
@@ -84,9 +83,11 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     if (!isServiceEnabled) {}
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
+      if(permission == LocationPermission.denied)
       if(!isHome) openAppSettings();
       if (permission == LocationPermission.denied) {
         showToast(msg: 'Location permissions are denied', toastState: false);
+        if(permission == LocationPermission.denied)
         if(!isHome) openAppSettings();
         return Future.error('Location permissions are denied');
       }
@@ -124,12 +125,18 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
       if(value.data['data']!=null){
         categoriesModel = CategoriesModel.fromJson(value.data);
         categoryId = categoriesModel!.data![0].id??'';
-        categorySearchId = categoriesModel!.data![0].id??'';
+        //categorySearchId = categoriesModel!.data![0].id??'';
         print("categoryId");
         print(categoryId);
 
         emit(HomeCategorySuccessState());
-        if(isSearch==false) getProviderCategory();
+        if(isSearch==false) {
+          if(currentIndex == 0){
+            getAllProvider();
+          }else{
+            getProviderCategory();
+          }
+        }
         if(isSearch==true)getProviderCategorySearch(search: "");
 
       }else{
@@ -154,7 +161,6 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     }else{
       url = '$providerCategoryUrl$categoryId?page=$page';
     }
-    print("allliiiii000000");
     emit(ProviderCategoryLoadingState());
     DioHelper.getData(
         url: url,
@@ -163,9 +169,6 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
       if(value.data['status']==true&&value.data['data']!=null){
         if(page == 1) {
           providerCategoryModel = ProviderCategoryModel.fromJson(value.data);
-
-          print("providerCategoryModelproviderCategoryModel");
-          print(providerCategoryModel?.data?.data?.length);
         }
         else{
           providerCategoryModel!.data!.currentPage = value.data['data']['currentPage'];
@@ -175,11 +178,6 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
           });
         }
         emit(ProviderCategorySuccessState());
-        // Timer(const Duration(milliseconds: 3), () {
-        //   _scrollToIndex();
-        //
-        // });
-
       }else if(value.data['status']==false&&value.data['data']!=null){
         showToast(msg: tr('wrong'));
         emit(ProviderCategoryWrongState());
@@ -192,7 +190,6 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   }
 
   void paginationProviderCategory(ScrollController controller){
-    print("allliiiiii");
     controller.addListener(() {
       if (controller.offset == controller.position.maxScrollExtent){
         if (providerCategoryModel!.data!.currentPage != providerCategoryModel!.data!.pages) {
@@ -210,18 +207,19 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   TextEditingController searchController = TextEditingController();
   void getProviderCategorySearch({int page = 1,required String search}){
     providerCategorySearchModel=null;
-    String url;
-    if(position!=null){
-      url = '$providerCategoryUrl$categorySearchId?user_latitude=${position!.latitude}&user_logitude=${position!.longitude}&page=$page&name=$search';
-    }else{
-      url = '$providerCategoryUrl$categorySearchId?page=$page&name=$search';
-    }
-    print(url);
     emit(ProviderCategorySearchLoadingState());
     DioHelper.getData(
-        url: url,
+        url: 'provider/all-providers',
+        query: {
+          'limit':20,
+          'name':search,
+          'page':page,
+          'category_id':categorySearchId,
+        },
         token: 'Bearer $token'
     ).then((value) {
+      print(value.headers);
+      print(value.realUri);
       if(value.data['status']==true&&value.data['data']!=null){
         if(page == 1) {
           providerCategorySearchModel = ProviderCategoryModel.fromJson(value.data);
@@ -253,6 +251,54 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
           if(state is! ProviderCategorySearchLoadingState){
             int currentPage = providerCategorySearchModel!.data!.currentPage! +1;
             getProviderCategorySearch(page: currentPage,search: search);
+          }
+        }
+      }
+    });
+  }
+
+  ProviderCategoryModel? allProviderModel;
+
+  ScrollController allProviderScrollController = ScrollController();
+
+
+  void getAllProvider({int page = 1}){
+    emit(ProviderCategoryLoadingState());
+    DioHelper.getData(
+        url: '$allProviderUrl$page',
+        token: 'Bearer $token'
+    ).then((value) {
+      if(value.data['status']==true&&value.data['data']!=null){
+        if(page == 1) {
+          allProviderModel = ProviderCategoryModel.fromJson(value.data);
+        }
+        else{
+          allProviderModel!.data!.currentPage = value.data['data']['currentPage'];
+          allProviderModel!.data!.pages = value.data['data']['pages'];
+          value.data['data']['data'].forEach((e){
+            allProviderModel!.data!.data!.add(ProviderData.fromJson(e));
+          });
+        }
+        emit(ProviderCategorySuccessState());
+      }else if(value.data['status']==false&&value.data['data']!=null){
+        showToast(msg: tr('wrong'));
+        emit(ProviderCategoryWrongState());
+      }
+    }).catchError((e){
+      print(e.toString());
+      showToast(msg: tr('server_error'),toastState: false);
+      emit(ProviderCategoryErrorState());
+    });
+  }
+
+  void paginationAllProvider(){
+    print("allliiiiii");
+    allProviderScrollController.addListener(() {
+      if (allProviderScrollController.offset == allProviderScrollController.position.maxScrollExtent){
+        if (allProviderModel!.data!.currentPage != allProviderModel!.data!.pages) {
+          if(state is! ProviderCategoryLoadingState){
+            int currentPage = allProviderModel!.data!.currentPage! +1;
+            getAllProvider(page: currentPage);
           }
         }
       }

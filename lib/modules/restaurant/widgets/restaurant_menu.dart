@@ -47,14 +47,16 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
       if(!isFirst){
         if(_index4.length ==1){
           HomeCategoryCubit.get(context).currentIndex = int.parse(_index4);
-          setState(() {});
+          HomeCategoryCubit.get(context).emitState();
+          //setState(() {});
         }else{
           // print(_index4.toString().characters.first);
           // print(_index4.toString().characters);
           // print(_index4.toString().characters.last);
           if(HomeCategoryCubit.get(context).currentIndex != _index4.toString().characters.first){
             HomeCategoryCubit.get(context).currentIndex = int.parse(_index4.toString().characters.first);
-            setState(() {});
+            HomeCategoryCubit.get(context).emitState();
+            //setState(() {});
           }
         }
       }
@@ -120,7 +122,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                     builder: (c){
                       return Expanded(
                         child: ScrollablePositionedList.separated(
-                            padding: EdgeInsets.only(bottom: size!.height*.25),
+                            padding: EdgeInsets.only(bottom: size!.height*.4),
                             itemBuilder: (c,index)=>Builder(
                               builder: (context) {
                                 return Column(
