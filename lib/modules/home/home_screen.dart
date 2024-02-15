@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // HomeCategoryCubit.get(context).init();
 
 
-    show();
+    //show();
   }
 
   show() async {
@@ -61,95 +61,102 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    HomeCategoryCubit.get(context).init(context);
-    AdsCubit.get(context).getAds();
+    Future.delayed(Duration.zero,(){
+      HomeCategoryCubit.get(context).init(context);
+      AdsCubit.get(context).getAds();
+    });
     return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = HomeCategoryCubit.get(context);
-        cubit.paginationAllProvider();
         return SafeArea(
-          child: Column(
-            children: [
-              homeAppBar(context),
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  // controller: HomeCategoryCubit.get(context).controllerScrnoll,
-                  controller: cubit.currentIndex==0?cubit.allProviderScrollController:null,
-                  children: [
-                    HomeSlider(closeTop),
-                    if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategoryLoadingState)
-                      HomeShimmer()
-                    else if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategorySuccessState)
-                      Center(child: AutoSizeText(tr('no_categories'),
-                        minFontSize: 8,
-                        maxLines: 1,))
-                    else if (state is HomeCategoryErrorState)
-                        Center(child: AutoSizeText(tr('no_categories'), minFontSize: 8,
+          child: InkWell(
+            onTap: ()=>FocusManager.instance.primaryFocus?.unfocus(),
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+            child: Column(
+              children: [
+                homeAppBar(context),
+                Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    // controller: HomeCategoryCubit.get(context).controllerScrnoll,
+                    controller: cubit.currentIndex==0?cubit.allProviderScrollController:null,
+                    children: [
+                      HomeSlider(closeTop),
+                      if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategoryLoadingState)
+                        HomeShimmer()
+                      else if (cubit.categoriesModel?.data?.isEmpty ?? true && state is HomeCategorySuccessState)
+                        Center(child: AutoSizeText(tr('no_categories'),
+                          minFontSize: 8,
                           maxLines: 1,))
-                      else
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: CategoryWidget(
-                          data: cubit.categoriesModel!.data,
+                      else if (state is HomeCategoryErrorState)
+                          Center(child: AutoSizeText(tr('no_categories'), minFontSize: 8,
+                            maxLines: 1,))
+                        else
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: CategoryWidget(
+                            data: cubit.categoriesModel?.data,
 
+                        ),
                       ),
-                    ),
-                    if (cubit.providerCategoryModel==null && state is ProviderCategoryLoadingState)
-                      DefaultListShimmer(),
-                      if (cubit.providerCategoryModel?.data?.data?.length ==0
-                          && state is ProviderCategorySuccessState)
-                      Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
-                        maxLines: 1,)),
-                    if (cubit.allProviderModel?.data?.data?.length ==0
-                          && state is ProviderCategorySuccessState)
-                      Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
-                        maxLines: 1,)),
-                      if (state is ProviderCategoryErrorState)
-                      Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
-                        maxLines: 1,)),
-                    if (cubit.providerCategoryModel?.data?.data?.isNotEmpty??true )
-                      Column(
-                        children: [
-                          // if (state is ProviderCategoryLoadingState) Center(child: CupertinoActivityIndicator()),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (c, i) => ProviderItem(providerData: cubit.providerCategoryModel!.data!.data![i]),
-                            separatorBuilder: (c, i) => const SizedBox(
-                              height: 20,
+                      if (cubit.providerCategoryModel==null && state is ProviderCategoryLoadingState)
+                        DefaultListShimmer(),
+                        if (cubit.providerCategoryModel!=null &&cubit.providerCategoryModel?.data?.data?.length ==0
+                        ||cubit.allProviderModel!=null &&cubit.allProviderModel?.data?.data?.length ==0
+                            && state is ProviderCategorySuccessState)
+                        Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
+                          maxLines: 1,)),
+                        if (state is ProviderCategoryErrorState)
+                        Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
+                          maxLines: 1,)),
+                      if (cubit.providerCategoryModel?.data?.data?.isNotEmpty??true )
+                        Column(
+                          children: [
+                            // if (state is ProviderCategoryLoadingState) Center(child: CupertinoActivityIndicator()),
+                            ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (c, i) => ProviderItem(providerData: cubit.providerCategoryModel!.data!.data![i]),
+                              separatorBuilder: (c, i) => const SizedBox(
+                                height: 20,
+                              ),
+                              itemCount: cubit.providerCategoryModel?.data?.data?.length??0,
+
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
                             ),
-                            itemCount: cubit.providerCategoryModel?.data?.data?.length??0,
+                          ],
+                        ),
 
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                          ),
-                        ],
-                      ),
+                      if (cubit.allProviderModel?.data?.data?.isNotEmpty??true )
+                        Builder(
+                          builder: (context) {
+                            cubit.paginationAllProvider();
+                            return Stack(
+                              alignment: AlignmentDirectional.bottomCenter,
+                              children: [
+                                ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder: (c, i) => ProviderItem(providerData: cubit.allProviderModel!.data!.data![i]),
+                                  separatorBuilder: (c, i) => const SizedBox(
+                                    height: 20,
+                                  ),
+                                  itemCount: cubit.allProviderModel?.data?.data?.length??0,
+                                  padding: const EdgeInsets.only(left: 20,right: 20,bottom: 30),
+                                ),
+                                if (state is ProviderCategoryLoadingState) Center(child: CupertinoActivityIndicator()),
 
-                    if (cubit.allProviderModel?.data?.data?.isNotEmpty??true )
-                      Stack(
-                        alignment: AlignmentDirectional.bottomCenter,
-                        children: [
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (c, i) => ProviderItem(providerData: cubit.allProviderModel!.data!.data![i]),
-                            separatorBuilder: (c, i) => const SizedBox(
-                              height: 20,
-                            ),
-                            itemCount: cubit.allProviderModel?.data?.data?.length??0,
-                            padding: const EdgeInsets.only(left: 20,right: 20,bottom: 30),
-                          ),
-                          if (state is ProviderCategoryLoadingState) Center(child: CupertinoActivityIndicator()),
+                              ],
+                            );
+                          }
+                        )
 
-                        ],
-                      )
-
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

@@ -56,7 +56,6 @@ class DefaultFirebaseOptions {
     projectId: 'safri-c7aa3',
     storageBucket: 'safri-c7aa3.appspot.com',
    // deepLinkURLScheme: 'https://safriapp.page.link'
-
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

@@ -46,7 +46,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     InkWell(
                       onTap: () {
                         HomeCategoryCubit.get(context).currentIndex = 0;
-                        HomeCategoryCubit.get(context).categoryId='';
+                        //HomeCategoryCubit.get(context).categoryId='';
                         HomeCategoryCubit.get(context).providerCategoryModel=null;
                         HomeCategoryCubit.get(context).allProviderModel=null;
                         HomeCategoryCubit.get(context).paginationAllProvider();

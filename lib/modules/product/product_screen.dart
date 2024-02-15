@@ -201,124 +201,132 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                     ),
                     if(productData.providerId?.opeingStatus!= 'closed')
-                    BlocConsumer<FastCubit, FastStates>(
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        return ConditionalBuilder(
-                          condition: state is! AddToCartLoadingState,
-                          fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
-                          builder: (c)=>InkWell(
-                            onTap: () {
-                              if( widget.isClosed??false){
-                                showToast(msg: tr('restaurant_closed'));
-                              }else{
-                                FastCubit.get(context).addToCart(
-                                    context: context,
-                                    quantity: quantity.toString(),
-                                    productId: productData.id??'',
-                                    selectedSizeId: selectSize.sizedId,
-                                    extras: extraWidget.extraId,
-                                    typeId: selectType.typeId
-                                );
-                              }
-                            },
-                            child: Container(
-                              height: 50,
-                              width:  size!.width*.8,
-                              decoration: BoxDecoration(
-                                  color: defaultColor,
-                                  borderRadius: BorderRadiusDirectional.circular(5),
-                                  border: Border.all(color: defaultColor)
-                              ),
-                              alignment: AlignmentDirectional.center,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  AutoSizeText(
-                                    tr('add_to_cart'),
-                                    minFontSize: 8,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: 15,fontWeight: FontWeight.w500,
-                                        color: Colors.white
+                    StatefulBuilder(
+                      builder:(context,_setState)=> BlocConsumer<FastCubit, FastStates>(
+                        listener: (context, state) {},
+                        builder: (context, state) {
+                          return ConditionalBuilder(
+                            condition: state is! AddToCartLoadingState,
+                            fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
+                            builder: (c)=>InkWell(
+                              onTap: () {
+                                if( widget.isClosed??false){
+                                  showToast(msg: tr('restaurant_closed'));
+                                }else{
+                                  print('hi');
+                                  print(quantity);
+                                  print(productData.id??'');
+                                  print('selectSize.sizedId${selectSize.sizedId}');
+                                  print(extraWidget.extraId);
+                                  print(selectType.typeId);
+                                  FastCubit.get(context).addToCart(
+                                      context: context,
+                                      quantity: quantity,
+                                      productId: productData.id??'',
+                                      selectedSizeId: selectSize.sizedId,
+                                      extras: extraWidget.extraId,
+                                      typeId: selectType.typeId
+                                  );
+                                }
+                              },
+                              child: Container(
+                                height: 50,
+                                width:  size!.width*.8,
+                                decoration: BoxDecoration(
+                                    color: defaultColor,
+                                    borderRadius: BorderRadiusDirectional.circular(5),
+                                    border: Border.all(color: defaultColor)
+                                ),
+                                alignment: AlignmentDirectional.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    AutoSizeText(
+                                      tr('add_to_cart'),
+                                      minFontSize: 8,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 15,fontWeight: FontWeight.w500,
+                                          color: Colors.white
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 20,),
-                                  Container(
-                                    height: 34,width: 130,
-                                    // decoration: BoxDecoration(
-                                    //   borderRadius: BorderRadiusDirectional.circular(58),
-                                    //   color: defaultColor.withOpacity(.3)
-                                    // ),
-                                    padding:const EdgeInsets.symmetric(horizontal: 0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: (){
-                                            print('productData.opeingStatus ${productData.opeingStatus}');
-                                            quantity++;
-                                            FastCubit.get(context).emitState();
-                                          },
-                                          child: Container(
-                                            height: 34,width: 34,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.white
-                                            ),
-                                            child: Center(
-                                              child: const AutoSizeText(
-                                                '+',
-                                                minFontSize: 8,
-                                                maxLines: 1,
-                                                style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.black),
+                                    SizedBox(width: 20,),
+                                    Container(
+                                      height: 34,width: 130,
+                                      // decoration: BoxDecoration(
+                                      //   borderRadius: BorderRadiusDirectional.circular(58),
+                                      //   color: defaultColor.withOpacity(.3)
+                                      // ),
+                                      padding:const EdgeInsets.symmetric(horizontal: 0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: (){
+                                              quantity++;
+                                              _setState((){});
+                                            },
+                                            child: Container(
+                                              height: 34,width: 34,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white
+                                              ),
+                                              child: Center(
+                                                child: const AutoSizeText(
+                                                  '+',
+                                                  minFontSize: 8,
+                                                  maxLines: 1,
+                                                  style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.black),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(width: 8,),
-                                        AutoSizeText(
-                                          '${  quantity??''}',
-                                          minFontSize: 8,
-                                          maxLines: 1,
-                                          style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
-                                        ),
-                                        SizedBox(width: 8,),
-                                        InkWell(
-                                          onTap: (){
-                                            if(quantity>1)
-                                              quantity--;
-                                            FastCubit.get(context).emitState();
-                                          },
-                                          child:Container(
-                                            height: 34,width: 34,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color:Color(0xffCACACA)
-                                            ),
-                                            child: Center(
-                                              child: const AutoSizeText(
-                                                '-',
-                                                minFontSize: 8,
-                                                maxLines: 1,
-                                                style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.black),
+                                          SizedBox(width: 8,),
+                                          AutoSizeText(
+                                            '${  quantity??''}',
+                                            minFontSize: 8,
+                                            maxLines: 1,
+                                            style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.white),
+                                          ),
+                                          SizedBox(width: 8,),
+                                          InkWell(
+                                            onTap: (){
+                                              if(quantity>1){
+                                                quantity--;
+                                                _setState((){});
+                                              }
+                                            },
+                                            child:Container(
+                                              height: 34,width: 34,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color:Color(0xffCACACA)
+                                              ),
+                                              child: Center(
+                                                child: const AutoSizeText(
+                                                  '-',
+                                                  minFontSize: 8,
+                                                  maxLines: 1,
+                                                  style: TextStyle(fontSize: 17.5,fontWeight:FontWeight.w500,color: Colors.black),
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
 
 
 
-                        );
-                      },
+                          );
+                        },
 
+                      ),
                     ),
                     const SizedBox(height: 40,),
                   ],

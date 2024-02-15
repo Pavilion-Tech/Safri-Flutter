@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
@@ -7,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:new_version_plus/new_version_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:safri/layout/cubit/states.dart';
 import 'package:safri/main.dart';
 import 'package:safri/models/ads_model.dart';
@@ -93,15 +98,62 @@ class FastCubit extends Cubit<FastStates>{
 
   void emitState()=>emit(EmitState());
 
-  void checkUpdate(context) async{
+  void updateApp(context) async{
     final newVersion =await NewVersionPlus().getVersionStatus();
-    if(newVersion !=null){
-      if(newVersion.canUpdate)navigateAndFinish(context, UpdateScreen(
-          url:newVersion.appStoreLink,
-          releaseNote:newVersion.releaseNotes??tr('update_desc')
-      ));
+    if(await checkUpdates()){
+      if(newVersion !=null){
+        if(newVersion.storeVersion.isNotEmpty)navigateAndFinish(context, UpdateScreen(
+            url:newVersion.appStoreLink,
+            releaseNote:newVersion.releaseNotes??tr('update_desc')
+        ));
+      }
     }
   }
+
+  Future<bool> checkUpdates() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    remoteConfig.ensureInitialized();
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+   fetchTimeout: const Duration(seconds: 10),
+   minimumFetchInterval: Duration.zero,
+   ));
+    await remoteConfig.fetchAndActivate();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    bool haveVersion = false;
+    
+    final json = remoteConfig.getString('app_version');
+    print(json);
+
+    Map<String,dynamic> jsonDecod =  jsonDecode(json);
+
+    print(jsonDecod.toString());
+
+    final version = jsonDecod['version'];
+
+    // final requiredBuildNumber = int.parse(version);
+    //
+    // final currentBuildNumber = int.parse(packageInfo.version);
+
+    final local = packageInfo.version.split('.').map(int.parse).toList();
+    final store = version.split('.').map(int.parse).toList();
+    for (var i = 0; i < store.length; i++) {
+      // The store version field is newer than the local version.
+      if (store[i] > local[i]) {
+        haveVersion = true;
+        //return true;
+      }
+
+      // The local version field is newer than the store version.
+      if (local[i] > store[i]) {
+        haveVersion = false;
+        //return false;
+      }
+    }
+
+    return haveVersion;
+  }
+
   void checkInterNet() async {
     InternetConnectionChecker().onStatusChange.listen((event) {
       final state = event == InternetConnectionStatus.connected;
@@ -225,14 +277,14 @@ class FastCubit extends Cubit<FastStates>{
   List<String> extraId = [];
   String typeId = '';
   String productId="";
-  String quantity="";
+  int quantity=1;
   String   selectedSizeId="";
   void addToCart({
   required String productId,
   required BuildContext context,
   required String  selectedSizeId,
   required String  typeId,
-  required String  quantity,
+  required int  quantity,
   required List<String>  extras,
 }){
     this.extraId= extras;
@@ -559,7 +611,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(DeleteAllCartSuccessState());
           addToCart(
             context: navigatorKey.currentContext!,
-            quantity: quantity.toString(),
+            quantity: quantity,
             productId: productId??'',
             selectedSizeId: selectedSizeId ,
             extras: extraId ,

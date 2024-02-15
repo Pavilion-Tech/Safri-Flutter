@@ -1,4 +1,3 @@
-
 import UIKit
 import Flutter
 import Firebase
@@ -33,4 +32,4 @@ didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: An
 application.registerForRemoteNotifications()
 return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-   }
+}

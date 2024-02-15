@@ -37,8 +37,6 @@ class _SelectServiceTypeState extends State<SelectServiceType> {
               title: 'Delivery',
               index: 1
             ),
-
-
             itemBuilder(
                 image: Images.pickup,
                 title: 'pick_up',

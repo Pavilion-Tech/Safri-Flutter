@@ -88,7 +88,9 @@ class MapScreen extends StatelessWidget {
                             // lng = cubit.position!.longitude;
                             // CacheHelper.saveData(key: 'lat', value: lat);
                             // CacheHelper.saveData(key: 'lng', value: lng);
-                            cubit.getProviderCategory();
+                            cubit.allProviderModel = null;
+                            cubit.providerCategoryModel = null;
+                            cubit.getAllProvider();
                             Navigator.pop(context);
                           }
                       ),
@@ -103,8 +105,11 @@ class MapScreen extends StatelessWidget {
                             // CacheHelper.removeData('lat');
                             // CacheHelper.removeData('lng');
                             cubit.position = null;
+                            cubit.providerCategoryModel = null;
+                            cubit.allProviderModel = null;
                             cubit.locationController.text = '';
-                            cubit.getProviderCategory();
+                            cubit.currentIndex = 1;
+                            cubit.getAllProvider();
                             Navigator.pop(context);
                           }
                       ),

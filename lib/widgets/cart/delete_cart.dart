@@ -16,7 +16,7 @@ class DeleteCartDialog extends StatelessWidget {
   List<String> extraId = [];
   String typeId = '';
   String productId="";
-  String quantity="";
+  int quantity;
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<FastCubit, FastStates>(

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safri/layout/cubit/cubit.dart';
 import 'package:safri/layout/cubit/states.dart';
 import 'package:safri/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
+import 'package:safri/modules/home/cubits/home_category_cubit/home_category_states.dart';
 import 'package:safri/modules/menu/cubit/menu_cubit.dart';
 import 'package:safri/modules/menu/cubit/menu_states.dart';
 import 'package:safri/modules/worng_screenss/maintenance_screen.dart';
@@ -71,7 +72,7 @@ class _FastLayoutState extends State<FastLayout> {
   }
   @override
   Widget build(BuildContext context) {
-    FastCubit.get(context).checkUpdate(context);
+    FastCubit.get(context).updateApp(context);
     return BlocConsumer<FastCubit, FastStates>(
       listener: (c, s) {
         if(isConnect!=null)checkNet(context);
@@ -87,7 +88,10 @@ class _FastLayoutState extends State<FastLayout> {
             }
           },
           builder: (context, state) {
-            return Scaffold(
+            return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return Scaffold(
               body: cubit.screens[cubit.currentIndex],
               bottomNavigationBar: SafeArea(
                 child: NavBar(
@@ -116,6 +120,8 @@ class _FastLayoutState extends State<FastLayout> {
                 ),
               ),
             );
+  },
+);
           },
         );
       },

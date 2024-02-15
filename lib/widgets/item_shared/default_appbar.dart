@@ -53,6 +53,7 @@ class DefaultAppBar extends StatelessWidget {
 
                     navigateAndFinish(context, OrderHistoryScreen());
                   }else{
+                    FocusManager.instance.primaryFocus?.unfocus();
                     Navigator.pop(context);
                   }
 

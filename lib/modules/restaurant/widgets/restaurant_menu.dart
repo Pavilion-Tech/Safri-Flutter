@@ -38,6 +38,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
   @override
   void initState() {
     super.initState();
+    if(widget.cubit.singleProviderModel?.data?.childCategoriesModified?.isNotEmpty??false)
     itemPositionsListener.itemPositions.addListener(() {
       final indices = itemPositionsListener.itemPositions.value.map((e) => e.index);
       String _index1 = indices.toString().replaceAll(')', '');

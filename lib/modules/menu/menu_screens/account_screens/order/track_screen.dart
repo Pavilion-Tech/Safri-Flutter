@@ -18,6 +18,16 @@ class TrackScreen extends StatelessWidget {
   String title;
   OrderData data;
 
+  String getService (){
+    switch(data.serviceType){
+      case 1:
+        return 'pick_up';
+      case 2:
+        return 'dine_in';
+      default: return 'Delivery';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +42,7 @@ class TrackScreen extends StatelessWidget {
 
                   children: [
                     AutoSizeText(
-                      data.serviceType ==1?tr('pick_up'):tr('dine_in'),
+                      tr('${getService()}'),
                       minFontSize: 8,
                       maxLines: 1,
                       style: TextStyle(fontSize: 15),

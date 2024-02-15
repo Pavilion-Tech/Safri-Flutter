@@ -31,12 +31,9 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   void init(context)async{
     // lat = CacheHelper.getData(key: 'lat');
     // lng = CacheHelper.getData(key: 'lng');
-    HomeCategoryCubit.get(context).currentIndex = 0;
-    if(HomeCategoryCubit.get(context).categoriesModel?.data?.isEmpty??true)
-    {
-      HomeCategoryCubit.get(context).getCategory();
-    }
-    HomeCategoryCubit.get(context).getCurrentLocation(isHome: true);
+    currentIndex = 0;
+    if(categoriesModel?.data?.isEmpty??true) getCategory();
+    if(position==null) getCurrentLocation(isHome: false);
     // if(lat!=null&&lng!=null){
     //   HomeCategoryCubit.get(context).position=LatLng(lat!,lng!);
     //
@@ -70,8 +67,9 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         Future.delayed(Duration(seconds: 2),(){
           getAddress(position!);
           allProviderModel = null;
+          providerCategoryModel = null;
           allProviderScrollController.removeListener(() { });
-          getProviderCategory();
+          getAllProvider();
         });
         //emit(GetCurrentLocationState());
       }
@@ -124,7 +122,6 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     ).then((value) {
       if(value.data['data']!=null){
         categoriesModel = CategoriesModel.fromJson(value.data);
-        categoryId = categoriesModel!.data![0].id??'';
         //categorySearchId = categoriesModel!.data![0].id??'';
         print("categoryId");
         print(categoryId);
@@ -133,11 +130,8 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         if(isSearch==false) {
           if(currentIndex == 0){
             getAllProvider();
-          }else{
-            getProviderCategory();
           }
-        }
-        if(isSearch==true)getProviderCategorySearch(search: "");
+        }else getProviderCategorySearch(search: "");
 
       }else{
         emit(HomeCategoryWrongState());
@@ -161,11 +155,13 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     }else{
       url = '$providerCategoryUrl$categoryId?page=$page';
     }
+    print(url);
     emit(ProviderCategoryLoadingState());
     DioHelper.getData(
         url: url,
         token: 'Bearer $token'
     ).then((value) {
+      print(value.data);
       if(value.data['status']==true&&value.data['data']!=null){
         if(page == 1) {
           providerCategoryModel = ProviderCategoryModel.fromJson(value.data);
@@ -263,9 +259,16 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
 
 
   void getAllProvider({int page = 1}){
+    String url;
+    if(position!=null){
+      url = '$allProviderUrl$page&user_latitude=${position!.latitude}&user_logitude=${position!.longitude}';
+    }else{
+      url = '$allProviderUrl$page';
+    }
+    print(url);
     emit(ProviderCategoryLoadingState());
     DioHelper.getData(
-        url: '$allProviderUrl$page',
+        url: url,
         token: 'Bearer $token'
     ).then((value) {
       if(value.data['status']==true&&value.data['data']!=null){

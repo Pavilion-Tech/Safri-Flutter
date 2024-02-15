@@ -31,7 +31,7 @@ class ProviderItem extends StatelessWidget {
          }
          print("providerData!.id.toString()");
          print(providerData!.id.toString());
-         navigateTo(context, RestaurantScreen(id: providerData!.id.toString(),isBranch: isBranch,));
+         navigateAndFinish(context, RestaurantScreen(id: providerData!.id.toString(),isBranch: isBranch,));
        }catch(e){
          print(e.toString());
        }
