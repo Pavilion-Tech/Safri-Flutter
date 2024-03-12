@@ -60,7 +60,7 @@
   "dine_in_service": "تناول العشاء في الخدمة",
   "status": "حالة",
   "open": "مفتوح",
-  "not_crowded": "غير مزدحم",
+  "not_crowded": "غير مشغول",
   "apply": "تطبيق",
   "menu": "قائمة",
   "info": "معلومات",
@@ -190,7 +190,7 @@
   "message_empty": "يجب ألا يكون الرساله فارغًا",
   "no_notification": "لا يوجد اشعارات حتي الان",
   "comment_empty": "التعليق فارغا ",
-  "crowded": "مزدحم",
+  "crowded": "مشغول",
   "Skip": "تخطى",
   "Next": "التالي",
   "Leave_Us_a_comment": "اترك لنا تعليقا",
@@ -227,19 +227,24 @@
   "all": "الكل",
   "server_error": "خطأ من السيرفر",
   "all_restaurant": "كل المطاعم",
-  "a": "كل"
-
-
-
-
-
-
-
-
-
-
-
-
-
+  "a": "كل",
+  "order_gift": "هدية الطلب",
+  "no_gifts": "ليس لديك هدايا بعد",
+  "restore_gift": "إعادة تخزين الهدية",
+  "re_choose_gift": "إعادة اختيار الهدية",
+  "cancel_gift": "إلغاء الهدية",
+  "choose_gift": "أختر هديتك",
+  "accept_gift": "قبول الهدية",
+  "choose_gift_first": "أختر الهدية اولاً",
+  "your_wallet_balance": "رصيد محفظتك",
+  "dont_have_payments": "ليس لديك أي مدفوعات",
+  "dont_have_payments_note": "يبدو أنك لا تملك أي مبالغ مالية، ولا تقلق، فسوف نخطرك عندما تحصل عليها",
+  "products": "منتجات",
+  "coupons": "خصومات",
+  "coupon": "خصم",
+  "you_need_to_have_a": "يجب أن يكون لديك",
+  "order_to_have_a": "من أجل الحصول على",
+  "pay_now": "ادفع الآن",
+  "previous_orders": "الطلبات السابقة"
 
 }

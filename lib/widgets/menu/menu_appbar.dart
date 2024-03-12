@@ -27,7 +27,7 @@ class MenuAppBar extends StatelessWidget {
               ),
               color: defaultColor
             ),
-            child: Image.asset(Images.bubbles,height: 132,width: double.infinity,),
+          //  child: Image.asset(Images.bubbles,height: 132,width: double.infinity,),
           ),
           if(token!=null)
           Align(

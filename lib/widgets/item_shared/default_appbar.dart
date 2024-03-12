@@ -21,16 +21,16 @@ class DefaultAppBar extends StatelessWidget {
       child: Stack(
         alignment: AlignmentDirectional.center,
         children: [
-          SizedBox(
-              height: 133,
-              width: double.infinity,
-              child: Image.asset(
-                Images.bubbles,
-                height: 133,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-          ),
+          // SizedBox(
+          //     height: 133,
+          //     width: double.infinity,
+          //     child: Image.asset(
+          //       Images.bubbles,
+          //       height: 133,
+          //       width: double.infinity,
+          //       fit: BoxFit.cover,
+          //     ),
+          // ),
           if(isCart)
           AutoSizeText(
             title,

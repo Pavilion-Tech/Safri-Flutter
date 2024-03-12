@@ -74,7 +74,7 @@ class CartItem extends StatelessWidget {
                     ),
                   ),
                   AutoSizeText(
-                    '${data.productPrice??'0'} ${tr("KWD")}',
+                    '${(int.parse(data.quantity??'') * double.parse(data.productPrice??'')).toString().padRight(5,'0')??'0'} ${tr("KWD")}',
                     minFontSize: 8,
                     maxLines: 1,
                     style: TextStyle(fontSize: 20,fontWeight: FontWeight.w700),

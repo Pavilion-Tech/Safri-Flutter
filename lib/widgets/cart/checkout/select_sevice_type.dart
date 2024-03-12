@@ -65,6 +65,10 @@ class _SelectServiceTypeState extends State<SelectServiceType> {
             widget.currentIndex = index;
           });
           FastCubit.get(context).emitState();
+          if(index !=1){
+            FastCubit.get(context).couponModel=null;
+            FastCubit.get(context).removeGift();
+          }
         },
         child: Column(
           children: [

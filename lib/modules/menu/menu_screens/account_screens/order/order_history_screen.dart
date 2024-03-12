@@ -60,7 +60,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                 height: size!.height,
                 child: Column(
                   children: [
-                    DefaultAppBar(tr('orders_history'),isOrderHistory: true,
+                    DefaultAppBar(tr('previous_orders'),isOrderHistory: true,
                     ),
                     Expanded(
                       child: ConditionalBuilder(

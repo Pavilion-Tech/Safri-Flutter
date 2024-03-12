@@ -69,17 +69,17 @@ class MenuScreen extends StatelessWidget {
                            }
                        ),
                        itemBuilder(
-                           title:tr('orders_history'),
+                           title:tr('previous_orders'),
                            onPressed: (){
                              navigateTo(context, OrderHistoryScreen());
                            }
                        ),
-                       // itemBuilder(
-                       //     title:tr('Wallet'),
-                       //     onPressed: (){
-                       //       navigateTo(context, WalletScreen());
-                       //     }
-                       // ),
+                       itemBuilder(
+                           title:tr('Wallet'),
+                           onPressed: (){
+                             navigateTo(context, WalletScreen());
+                           }
+                       ),
                        // itemBuilder(
                        //     title: tr('wallet'),
                        //     onPressed: (){

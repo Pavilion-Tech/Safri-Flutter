@@ -17,6 +17,7 @@ import '../../shared/styles/colors.dart';
 import '../../widgets/item_shared/default_button.dart';
 import '../../widgets/item_shared/image_net.dart';
 import '../../widgets/product/extra.dart';
+import '../../widgets/product/product_images.dart';
 import '../../widgets/product/select_size.dart';
 import '../../widgets/product/select_type.dart';
 import '../../widgets/shimmer/notification_shimmer.dart';
@@ -121,14 +122,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
                         children: [
-                          Container(
-                            height: 258,width: 258,
-                            decoration:const BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: ImageNet(image: productData.mainImage??''),
-                          ),
+                          ProductImages(image: productData.images),
                           AutoSizeText(
                             productData.title??'',
                             minFontSize: 8,
@@ -223,7 +217,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                       context: context,
                                       quantity: quantity,
                                       productId: productData.id??'',
-                                      selectedSizeId: selectSize.sizedId,
+                                      selectedSizeId: selectSize.sizedId??'',
                                       extras: extraWidget.extraId,
                                       typeId: selectType.typeId
                                   );
@@ -231,7 +225,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               },
                               child: Container(
                                 height: 50,
-                                width:  size!.width*.8,
+                                width:  size!.width*.85,
                                 decoration: BoxDecoration(
                                     color: defaultColor,
                                     borderRadius: BorderRadiusDirectional.circular(5),
@@ -241,6 +235,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
+                                    SizedBox(width: 30,),
                                     AutoSizeText(
                                       tr('add_to_cart'),
                                       minFontSize: 8,
@@ -250,14 +245,21 @@ class _ProductScreenState extends State<ProductScreen> {
                                           color: Colors.white
                                       ),
                                     ),
-                                    SizedBox(width: 20,),
-                                    Container(
-                                      height: 34,width: 130,
-                                      // decoration: BoxDecoration(
-                                      //   borderRadius: BorderRadiusDirectional.circular(58),
-                                      //   color: defaultColor.withOpacity(.3)
-                                      // ),
-                                      padding:const EdgeInsets.symmetric(horizontal: 0),
+                                    const SizedBox(width: 25,),
+                                    if(selectSize.sizedId!=null)
+                                    Expanded(
+                                      child: Text(
+                                        '${(quantity * (double.parse(selectSize.sizes[selectSize.sizes.indexWhere((element) => element.id==selectSize.sizedId)].priceAfterDiscount??'0'))).toString().padRight(5,'0')} KWD',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 12.4,fontWeight: FontWeight.w700,
+                                            color: Colors.white
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [

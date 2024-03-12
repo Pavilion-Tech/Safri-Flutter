@@ -1,18 +1,28 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safri/layout/cubit/cubit.dart';
+import 'package:safri/modules/menu/cubit/menu_cubit.dart';
+import 'package:safri/modules/menu/cubit/menu_states.dart';
 import 'package:safri/shared/components/constant.dart';
 import 'package:safri/shared/images/images.dart';
 import 'package:safri/shared/styles/colors.dart';
 import 'package:safri/widgets/item_shared/default_appbar.dart';
 import 'package:safri/widgets/item_shared/default_button.dart';
 
+import '../../../../widgets/menu/wallet/no_wallet.dart';
+import '../../../../widgets/menu/wallet/wallet_widget.dart';
+
 class WalletScreen extends StatelessWidget {
   const WalletScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<MenuCubit, MenuStates>(
+  listener: (context, state) {},
+  builder: (context, state) {
     return Scaffold(
       body: Column(
         children: [
@@ -39,41 +49,14 @@ class WalletScreen extends StatelessWidget {
                 // ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30.0),
-                  child:Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AutoSizeText(
-                            "${tr('2.589')}",
-                            minFontSize: 8,
-                            maxLines: 1,
-                            style: TextStyle(color: defaultColor,fontWeight: FontWeight.w600,fontSize: 35),
-                          ),
-                          Column(
-                            children: [
-                              SizedBox(height: 15,),
-                              AutoSizeText(
-                                " ${tr("KWD")}",
-                                minFontSize: 8,
-                                maxLines: 1,
-                                style: TextStyle(color: Color(0xff4B4B4B),fontWeight: FontWeight.w600,fontSize: 11),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 15,),
-                      AutoSizeText(
-                        tr('Your_Bending_Earning'),
-                        minFontSize: 8,
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 15,height: 1),
-                      ),
-                      const SizedBox(height: 30,),
-
-                    ],
+                  child:ConditionalBuilder(
+                    condition: MenuCubit.get(context).userModel!=null,
+                    fallback: (c)=>Center(child: CircularProgressIndicator(),),
+                    builder: (c)=> ConditionalBuilder(
+                      condition: MenuCubit.get(context).userModel?.data?.wallet != 0,
+                      fallback: (c)=>NoWallet(),
+                      builder: (c)=> WalletWidget(),
+                    ),
                   )
                 ),
 
@@ -83,5 +66,8 @@ class WalletScreen extends StatelessWidget {
         ],
       ),
     );
+  },
+);
   }
 }
+

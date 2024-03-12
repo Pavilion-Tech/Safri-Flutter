@@ -21,6 +21,7 @@ class Data {
   String? currentLanguage;
   String? personalPhoto;
   String? email;
+  dynamic wallet;
   int? status;
 
 
@@ -35,6 +36,7 @@ class Data {
     currentLanguage = json['current_language'];
     personalPhoto = json['personal_photo'];
     status = json['status'];
+    wallet = json['wallet'];
   }
 
 }

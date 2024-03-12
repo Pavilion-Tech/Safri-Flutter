@@ -42,7 +42,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     children: [
                       FirstWidget(data),
                       SizedBox(
-                        height: data.products!.length == 1?200:480,
+                        height: data.products!.length == 1?200:360,
                         child: ListView.separated(
                             itemBuilder: (c,i)=>OrderItem(products: data.products![i]),
                             separatorBuilder: (c,i)=>const SizedBox(height: 20,),
@@ -108,6 +108,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       //   subTitle: "",
                       //   subTitleDesc:   "",
                       // ),
+                      if(data.totalPrice !='0.000')
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: PaymentItem(PaymentMethodModel(title: data.paymentMethod??"",method: data.paymentMethod??""),),
@@ -117,6 +118,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       Invoice(
                         isOrderDetails: true,
                         delivery: data.shippingCharges??"",
+                        wallet:data.usedWalletPrice,
                         selectServiceType:data.serviceType ,
                         total: data.totalPrice,
                         // appFee: data.appFees,

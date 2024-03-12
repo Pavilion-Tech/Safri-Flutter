@@ -9,7 +9,7 @@ class SelectSize extends StatefulWidget {
   SelectSize(this.sizes);
   List<Sizes> sizes;
 
-  late String sizedId;
+  String? sizedId;
 
   @override
   State<SelectSize> createState() => _SelectSizeState();

@@ -62,7 +62,7 @@ class _HomeSliderState extends State<HomeSlider> {
 
               if(!widget.closeTop)const SizedBox(height: 20,),
               ConditionalBuilder(
-                condition:AdsCubit.get(context).adsModel?.data?.imageAdvertisements?.isNotEmpty??true,
+                condition:AdsCubit.get(context).adsModel?.data?.imageAdvertisements?.isNotEmpty??false,
                 fallback: (c)=>SizedBox(),
                 builder: (c)=> AnimatedOpacity(
                   opacity: widget.closeTop?0:1,

@@ -14,6 +14,7 @@ import '../shared/components/components.dart';
 import '../shared/components/constant.dart';
 import '../shared/images/images.dart';
 import '../shared/styles/colors.dart';
+import '../widgets/home/ad_dialog.dart';
 import 'nav_screen.dart';
 
 class FastLayout extends StatefulWidget {

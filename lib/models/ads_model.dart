@@ -13,12 +13,19 @@ class AdsModel {
 
 class Data {
   List<ImageAdvertisements>? imageAdvertisements;
+  List<ImageAdvertisements>? popUpAdvertisements;
 
   Data.fromJson(Map<String, dynamic> json) {
     if (json['image_advertisements'] != null) {
       imageAdvertisements = <ImageAdvertisements>[];
       json['image_advertisements'].forEach((v) {
         imageAdvertisements!.add(ImageAdvertisements.fromJson(v));
+      });
+    }
+    if (json['pop_up_advertisements'] != null) {
+      popUpAdvertisements = <ImageAdvertisements>[];
+      json['pop_up_advertisements'].forEach((v) {
+        popUpAdvertisements!.add(ImageAdvertisements.fromJson(v));
       });
     }
   }

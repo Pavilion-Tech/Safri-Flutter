@@ -101,6 +101,8 @@ class _CartScreenState extends State<CartScreen> {
                   text: tr('checkout'),
                   onTap: () {
                     cubit.couponModel=null;
+                    cubit.currentGift=null;
+                    cubit.useWallet=false;
                     navigateTo(context, CheckoutScreen());
                   },
                 ),

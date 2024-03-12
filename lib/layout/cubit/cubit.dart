@@ -19,7 +19,9 @@ import 'package:safri/models/cart_model.dart';
 import 'package:safri/models/coupon_model.dart';
 import 'package:safri/models/provider_category_model.dart';
 import 'package:safri/modules/home/cubits/home_category_cubit/home_category_cubit.dart';
+import 'package:safri/modules/menu/cubit/menu_cubit.dart';
 import 'package:safri/shared/network/remote/end_point.dart';
+import 'package:safri/widgets/cart/checkout/list_gift_dialog.dart';
 import '../../models/check_order_status_model.dart';
 import '../../models/category_model.dart';
 import '../../models/create_order_model.dart';
@@ -61,6 +63,7 @@ class FastCubit extends Cubit<FastStates>{
 
 
 
+  bool useWallet = false;
 
   List<ProviderProductsModel> productsModel = [];
 
@@ -88,6 +91,34 @@ class FastCubit extends Cubit<FastStates>{
 
   List<ProviderProductsModel>? providerProductsModels;
 
+  GiftModel? currentGift;
+
+  String currentDisableGift = '';
+
+
+  void chooseGift(GiftModel giftModel){
+    currentGift = giftModel;
+    removeDisableGift();
+  }
+  void removeGift(){
+    currentGift = null;
+    emitState();
+  }
+
+  void chooseDisableGift(String id){
+    currentDisableGift = id;
+    removeGift();
+  }
+  void removeDisableGift(){
+    currentDisableGift = '';
+    emitState();
+  }
+
+  void changeWallet(bool useWallet){
+    this.useWallet = useWallet;
+    if(this.useWallet)couponModel=null;
+    emitState();
+  }
 
 
 
@@ -466,6 +497,7 @@ class FastCubit extends Cubit<FastStates>{
   // String? colorOfCar,
   // String? noOfCar,
   String? couponCode,
+  required BuildContext context,
     // int? foodType,
 }){
      print("aslasklkdlkdkldalda");
@@ -488,10 +520,25 @@ class FastCubit extends Cubit<FastStates>{
       // if(noOfCar!=null)'number_of_car':noOfCar,
       'payment_method':paymentMethod,
       'service_type':serviceType,
+      'use_wallet':useWallet?1:2,
       if(CacheHelper.getData(key: "long",  ) !=null) 'user_longitude': CacheHelper.getData(key: "long",  ),
       if(CacheHelper.getData(key: "lat",  ) !=null) 'user_latitude': CacheHelper.getData(key: "lat",  ),
       // 'dinner_type':foodType,
     });
+    if(currentGift!=null){
+      formData.fields.add(
+        MapEntry('gift_type',currentGift!.type),
+      );
+      formData.fields.add(
+        MapEntry(
+            currentGift!.type == 'product'
+                ?'gift_product_id'
+                :currentGift!.type == 'coupoun'
+                ?'gift_coupoun_id'
+                :'gift_wallets_price_id',
+            currentGift!.id),
+      );
+    }
     for(int i = 0 ; i < cartModel!.data!.cart!.length; i++){
       print("cartModel?.data?.data?.cart?[i].productId");
       print(cartModel?.data?.cart?[i].productId);
@@ -531,15 +578,15 @@ class FastCubit extends Cubit<FastStates>{
         createOrderModel=CreateOrderModel.fromJson(value.data);
         showToast(msg: value.data['message']);
         couponModel = null;
-
-
         emit(CreateOrderSuccessState());
+        MenuCubit.get(context).getUser();
         getAllCarts();
         if(paymentMethod=="online"){
           // showDialog(context: navigatorKey.currentContext!, barrierDismissible: false, builder: (context) => CheckoutDone(
           //     value.data['data']["payment_data"]["data"]??"",true));
           print("order id is ");
           print(value.data['data']["order"]["id"]);
+          print(createOrderModel!.data!.paymentData!.data);
           navigateTo(navigatorKey.currentContext, WebViewCustomScreen(url: value.data['data']["payment_data"]["data"],
           orderId: value.data['data']["order"]["id"],data:  createOrderModel!.data!.order!));
         }else{
@@ -554,6 +601,7 @@ class FastCubit extends Cubit<FastStates>{
         emit(CreateOrderWrongState());
       }
     }).catchError((e){
+      print(e.toString());
       showToast(msg: tr('server_error'),toastState: false);
       emit(CreateOrderErrorState());
     });
@@ -601,7 +649,6 @@ class FastCubit extends Cubit<FastStates>{
       url: deleteAllCartUrl,
       token: 'Bearer $token',
         data: {
-
           'mobile_MAC_address':fcmToken,
         }
     ).then((value) {
@@ -639,6 +686,7 @@ class FastCubit extends Cubit<FastStates>{
         showToast(msg: value.data['message']);
         if(value.data['data']['is_applied']==true){
           couponModel = CouponModel.fromJson(value.data);
+          changeWallet(false);
           emit(CouponSuccessState());
         }else{
           emit(CouponWrongState());

@@ -86,6 +86,8 @@ class Images{
   static const String holder = 'assets/images/holder.webp';
   static const String browse = 'assets/images/browse.png';
   static const String camera = 'assets/images/camera.png';
+  static const String cancel = 'assets/images/cancel.png';
+  static const String close = 'assets/images/close.png';
 
   //Will Delete
   static const String  homeImage = 'assets/images/home_image.png';
@@ -93,6 +95,8 @@ class Images{
   static const String  burger = 'assets/images/burger.png';
   static const String  pizza = 'assets/images/pizza.png';
   static const String  profileImage = 'assets/images/profile_image.png';
+  static const String  cola = 'assets/images/cola.png';
+  static const String  ad = 'assets/images/ad.png';
 
 
 

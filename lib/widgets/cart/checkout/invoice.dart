@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:safri/shared/styles/colors.dart';
 
 class Invoice extends StatelessWidget {
-  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType,this.delivery,required this.selectServiceType,  this.isOrderDetails=false});
+  Invoice({this.subtotal,this.total,this.appFee,this.tax,this.discount,this.discountType,this.delivery,required this.selectServiceType,  this.isOrderDetails=false,this.wallet});
 
   dynamic subtotal;
   dynamic total;
@@ -14,6 +14,7 @@ class Invoice extends StatelessWidget {
   String? delivery;
   int? discountType;
   int? selectServiceType;
+  dynamic wallet;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,11 @@ class Invoice extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
+          if(wallet!=null)
+          itemBuilder(
+            text: 'wallet',
+            price: '-$wallet'
+          ),
           itemBuilder(
             text: 'subtotal',
             price: subtotal??'10'

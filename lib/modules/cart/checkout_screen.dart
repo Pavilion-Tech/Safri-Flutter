@@ -10,6 +10,7 @@ import 'package:safri/layout/cubit/cubit.dart';
 import 'package:safri/layout/cubit/states.dart';
 import 'package:safri/modules/addresses/add_new_address_screen.dart';
 import 'package:safri/modules/addresses/widgets/addresses_list.dart';
+import 'package:safri/modules/menu/cubit/menu_cubit.dart';
 import 'package:safri/shared/components/components.dart';
 import 'package:safri/shared/components/constant.dart';
 import 'package:safri/shared/images/images.dart';
@@ -20,11 +21,14 @@ import 'package:safri/widgets/item_shared/defult_form.dart';
 import '../../shared/network/local/cache_helper.dart';
 import '../../widgets/cart/checkout/checkout_done.dart';
 import '../../widgets/cart/checkout/checkout_list_item.dart';
+import '../../widgets/cart/checkout/gift_widget.dart';
 import '../../widgets/cart/checkout/have_discount.dart';
 import '../../widgets/cart/checkout/invoice.dart';
+import '../../widgets/cart/checkout/list_gift_dialog.dart';
 import '../../widgets/cart/checkout/payment_method.dart';
 import '../../widgets/cart/checkout/pick_time.dart';
 import '../../widgets/cart/checkout/select_sevice_type.dart';
+import '../../widgets/cart/checkout/wallet_balance.dart';
 import '../../widgets/item_shared/default_appbar.dart';
 
 class CheckoutScreen extends StatelessWidget {
@@ -49,6 +53,11 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     haveDiscount = HaveDiscount(couponController);
+    Future.delayed(Duration(seconds: 2),(){
+      if(FastCubit.get(context).cartModel?.data?.gifts!=null){
+        showDialog(context: context, builder: (context)=>ListGiftDialog());
+      }
+    });
     return Scaffold(
       body: BlocConsumer<FastCubit, FastStates>(
         listener: (c, s) {
@@ -151,7 +160,9 @@ class CheckoutScreen extends StatelessWidget {
                                     // },
                                   ),
                                 // if(selectServiceType.currentIndex==2)
-                                //   const SizedBox(height: 20,),
+                                //   Text(
+                                //     cubit.cartModel?.data?.cart[0].p
+                                //   ),
                                 if (selectServiceType.currentIndex == 3)
                                   const SizedBox(
                                     height: 20,
@@ -240,24 +251,43 @@ class CheckoutScreen extends StatelessWidget {
                               ],
                             ),
                           ),
+                          if(selectServiceType.currentIndex ==1)
+                            if(cubit.cartModel?.data?.gifts!=null)
+                          GiftWidget(),
+                          if(selectServiceType.currentIndex ==1)
+                            const SizedBox(
+                            height: 20,
+                          ),
                           paymentMethod,
-                          Text("${cubit.couponModel?.data?.discountType??" "}"),
                           if (cubit.couponModel == null) haveDiscount,
                           Invoice(
                             selectServiceType: getServiceTypeIndex(),
                             delivery: cubit.cartModel?.data?.invoiceSummary?.shippingCharges ?? '',
                             discount: cubit.couponModel?.data?.discountValue,
+                            wallet:cubit.useWallet
+                                ? MenuCubit.get(context).userModel?.data?.wallet !=null
+                                ?MenuCubit.get(context).userModel!.data!.wallet! >= double.parse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)
+                                ?cubit.cartModel!.data!.invoiceSummary!.totalPrice!
+                                :MenuCubit.get(context).userModel!.data!.wallet!
+                                :null
+                                :null,
                             discountType: cubit.couponModel?.data?.discountType,
                             tax: cubit.cartModel?.data?.invoiceSummary?.vatValue ?? '',
                             subtotal: cubit.cartModel?.data?.invoiceSummary?.subTotalPrice ?? '',
                             // appFee: cubit.cartModel?.data?.data?.invoiceSummary?.appFees ?? '',
                             total: cubit.couponModel != null
                                 ? cubit.couponModel?.data?.discountType == 1
-                                    ? int.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! -
-                                        (int.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! / cubit.couponModel!.data!.discountValue!).round()
-                                    : (int.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! - cubit.couponModel!.data!.discountValue!)
-                                : cubit.cartModel?.data?.invoiceSummary?.totalPrice ?? '',
+                                    ? double.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! -
+                                        (double.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! / cubit.couponModel!.data!.discountValue!).round()
+                                    : (double.tryParse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)! - cubit.couponModel!.data!.discountValue!)
+                                :!cubit.useWallet
+                                ? cubit.cartModel?.data?.invoiceSummary?.totalPrice ?? ''
+                                :MenuCubit.get(context).userModel?.data?.wallet! >= double.parse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)
+                                ?'0'
+                                : double.parse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!) - MenuCubit.get(context).userModel?.data?.wallet!,
                           ),
+                          WalletBalance(),
+                          const SizedBox(height: 20,),
                           ConditionalBuilder(
                             condition: state is! CreateOrderLoadingState,
                             fallback: (c) => Center(
@@ -276,9 +306,21 @@ class CheckoutScreen extends StatelessWidget {
                                     showToast(msg: tr('Please_the_table_number_must_not_be_empty'),toastState: false);
                                     return;
                                   }
+                                  if(cubit.currentGift?.type == 'coupoun'){
+                                    haveDiscount.controller.text = cubit.currentGift!.title??'';
+                                    print('haveDiscount.controller.text'+haveDiscount.controller.text);
+                                  }
+                                  if(cubit.useWallet){
+                                    if(MenuCubit.get(context).userModel?.data?.wallet!
+                                        >= double.parse(cubit.cartModel!.data!.invoiceSummary!.totalPrice!)){
+                                      paymentMethod.method = 'cash';
+                                      paymentMethod.createState();
+                                    }
+                                  }
                                   FastCubit.get(context).createOrder(
                                       date:
                                           '${pickTime.dateTime.month}-${pickTime.dateTime.day}-${pickTime.dateTime.year} ${pickTime.dateTime.hour}:${pickTime.dateTime.minute}:${pickTime.dateTime.second}',
+                                      context: context,
                                       paymentMethod: paymentMethod.method,
                                       serviceType: getServiceTypeIndex(),
                                       couponCode: haveDiscount.controller.text.isNotEmpty ? haveDiscount.controller.text : null,
@@ -299,7 +341,7 @@ class CheckoutScreen extends StatelessWidget {
                                 //   print('hi');
                                 // }
                               },
-                              text: tr('place_order'),
+                              text: tr('pay_now'),
                             ),
                           ),
                           const SizedBox(

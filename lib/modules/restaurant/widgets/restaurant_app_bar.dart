@@ -7,6 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:safri/layout/layout_screen.dart';
 import 'package:safri/shared/components/components.dart';
 import 'package:safri/widgets/restaurant/all_reviews_dialog.dart';
+import 'package:safri/widgets/shimmer/default_list_shimmer.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../layout/cubit/cubit.dart';
 import '../../../shared/components/constant.dart';
@@ -35,13 +37,13 @@ class _RestaurantAppBarState extends State<RestaurantAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    context.locale;
+    print(size!.height);
     return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
   listener: (context, state) {},
   builder: (context, state) {
     var categoryCubit = HomeCategoryCubit.get(context);
     return AnimatedContainer(
-      height:categoryCubit.currentIndex!=0?120: size!.height * .3 + 100,
+      height:categoryCubit.currentIndex!=0?120: (size!.height > 700?size!.height *.3:size!.height *.4) + 100,
       duration: Duration(milliseconds: 1000),
       child: Stack(
         alignment: AlignmentDirectional.bottomCenter,
@@ -133,43 +135,61 @@ class _RestaurantAppBarState extends State<RestaurantAppBar> {
                                             style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600,color: Color(0xff000000)),
                                           ),
                                         ),
+                                        const SizedBox(width: 10,),
                                         // if(!widget.isBranch)
-                                        if(FastCubit.get(context).providerBranchesModel!=null)
-                                          if(FastCubit.get(context).providerBranchesModel?.data?.data?.isNotEmpty??true)
-                                            InkWell(
-                                              onTap: (){
-                                                showModalBottomSheet(
-                                                    context: context,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius:const BorderRadiusDirectional.only(
-                                                        topEnd: Radius.circular(20),
-                                                        topStart: Radius.circular(20),
-                                                      ),
-                                                      side: BorderSide(width: 3,color: Colors.grey.shade200),
+                                            ConditionalBuilder(
+                                              condition: FastCubit.get(context).providerBranchesModel!=null,
+                                              fallback: (c)=>Shimmer.fromColors(
+                                                highlightColor: Colors.white,
+                                                baseColor: Colors.grey.shade200,
+                                                child: Container(
+                                                  height: 32,
+                                                  width:80,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey.shade200,
+                                                    borderRadius: BorderRadiusDirectional.circular(5),
+                                                  ),
+                                                ),
+                                              ),
+                                              builder: (c)=> ConditionalBuilder(
+                                                condition:FastCubit.get(context).providerBranchesModel?.data?.data?.isNotEmpty??false,
+                                                fallback: (c)=>SizedBox(),
+                                                builder: (c)=> InkWell(
+                                                  onTap: (){
+                                                    showModalBottomSheet(
+                                                        context: context,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:const BorderRadiusDirectional.only(
+                                                            topEnd: Radius.circular(20),
+                                                            topStart: Radius.circular(20),
+                                                          ),
+                                                          side: BorderSide(width: 3,color: Colors.grey.shade200),
+                                                        ),
+                                                        builder: (context)=>BrancheBottomSheet()
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    height: 32,
+                                                    //width:80,
+                                                    decoration: BoxDecoration(
+                                                      color: defaultColor,
+                                                      borderRadius: BorderRadiusDirectional.circular(5),
                                                     ),
-                                                    builder: (context)=>BrancheBottomSheet()
-                                                );
-                                              },
-                                              child: Column(
-                                                children: [
-                                                  const SizedBox(height: 10,),
-                                                  AutoSizeText(
-                                                    tr('change_branch'),
-                                                    minFontSize: 8,
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                        color: defaultColor,
-                                                        decoration: TextDecoration.underline,
-                                                        fontSize: 9.4,
-                                                        fontWeight: FontWeight.w500
+                                                    alignment: AlignmentDirectional.center,
+                                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                                    child: AutoSizeText(
+                                                      'change_branch'.tr(),
+                                                      minFontSize: 8,
+                                                      maxLines: 1,
+                                                      style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),
                                                     ),
                                                   ),
-                                                ],
+                                                ),
                                               ),
                                             ),
-                                        const SizedBox(width: 10,)
                                       ],
                                     ),
+                                    const SizedBox(height: 5,),
                                     Row(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.start,

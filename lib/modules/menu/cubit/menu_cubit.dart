@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:safri/layout/cubit/cubit.dart';
 import 'package:safri/models/notification_model.dart';
 import 'package:safri/modules/menu/cubit/menu_states.dart';
 import 'package:safri/shared/components/components.dart';
@@ -325,6 +326,7 @@ class MenuCubit extends Cubit<MenuStates>{
   }
   
   void log(BuildContext context,{bool isDelete = false}){
+    FastCubit.get(context).deleteAllCart();
     if(isDelete)DioHelper.getData(url: '$deleteUserUrl$id');
     token = null;
     id = null;

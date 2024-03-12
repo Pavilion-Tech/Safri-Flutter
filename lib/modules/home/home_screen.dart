@@ -13,6 +13,7 @@ import '../../layout/cubit/cubit.dart';
 import '../../shared/components/components.dart';
 import '../../shared/components/constant.dart';
 import '../../shared/styles/colors.dart';
+import '../../widgets/home/ad_dialog.dart';
 import '../../widgets/item_shared/category_widget.dart';
 import '../../widgets/item_shared/provider_item.dart';
 import '../../widgets/shimmer/default_list_shimmer.dart';
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero,(){
       HomeCategoryCubit.get(context).init(context);
-      AdsCubit.get(context).getAds();
+      AdsCubit.get(context).getAds(context);
     });
     return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
       listener: (context, state) {},

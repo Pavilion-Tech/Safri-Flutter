@@ -14,7 +14,18 @@ import 'cubits/home_category_cubit/home_category_cubit.dart';
 import 'cubits/home_category_cubit/home_category_states.dart';
 
 class MapScreen extends StatelessWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  MapScreen({Key? key}) : super(key: key);
+
+  Marker? marker;
+
+  void getMarker (latLng){
+    marker = Marker(
+      markerId: MarkerId('origin'),
+      icon: BitmapDescriptor.defaultMarker,
+      position: latLng,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +66,12 @@ class MapScreen extends StatelessWidget {
                   ),
                 onTap: (latLng){
                   cubit.position = latLng;
+                  getMarker(latLng);
                   cubit.getAddress(latLng);
+                  cubit.emitState();
+                },
+                markers: {
+                  if(marker!=null)marker!,
                 },
                 myLocationEnabled: true,
                 zoomGesturesEnabled: true,
