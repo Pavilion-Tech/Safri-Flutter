@@ -37,7 +37,6 @@ class _RestaurantAppBarState extends State<RestaurantAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    print(size!.height);
     return BlocConsumer<HomeCategoryCubit, HomeCategoryStates>(
   listener: (context, state) {},
   builder: (context, state) {
@@ -73,7 +72,7 @@ class _RestaurantAppBarState extends State<RestaurantAppBar> {
                     )
                 ),
                 clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: ImageNet(image:widget.cubit.singleProviderModel?.data?.personalPhoto??'',fit: BoxFit.cover,),
+                child: ImageNet(image:widget.cubit.singleProviderModel?.data?.coverPhoto??'',fit: BoxFit.cover,),
               ),
             ),
           ),
@@ -178,7 +177,7 @@ class _RestaurantAppBarState extends State<RestaurantAppBar> {
                                                     alignment: AlignmentDirectional.center,
                                                     padding: EdgeInsets.symmetric(horizontal: 10),
                                                     child: AutoSizeText(
-                                                      'change_branch'.tr(),
+                                                      'choose_branch'.tr(),
                                                       minFontSize: 8,
                                                       maxLines: 1,
                                                       style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500),

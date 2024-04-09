@@ -162,6 +162,7 @@ class Types {
 class Extra {
   String? id;
   String? name;
+  String? isMulti;
   dynamic price;
 
 
@@ -169,6 +170,7 @@ class Extra {
     id = json['id'];
     name = json['name'];
     price = json['price'];
+    isMulti = json['is_multi'];
   }
 
 }

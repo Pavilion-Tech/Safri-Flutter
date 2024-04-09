@@ -11,14 +11,13 @@ class FilterBottomSheet extends StatefulWidget {
 }
 
 class _FilterBottomSheetState extends State<FilterBottomSheet> {
-  int currentService = 0;
 
   int currentStatus = 0;
 
   List<String> titles = [
-    'all_service',
-    'pick_up_service',
-    'dine_in_service',
+    'opened',
+    'not_crowded',
+    'nearest',
   ];
 
 
@@ -30,40 +29,22 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(bottom: 15),
             child: Text(
-              tr('service'),style:const TextStyle(fontSize: 16),
+              tr('filters'),style:const TextStyle(fontSize: 16),
             ),
           ),
-          SizedBox(
-            height: 32,
-            child: ListView.separated(
-                itemBuilder: (c,i)=>itemBuilder(
-                  text: titles[i],
-                  isSelected: currentService == i ,
-                  index: i
-                ),
-                shrinkWrap: true,
-                separatorBuilder: (c,i)=>const SizedBox(width: 10,),
-                scrollDirection: Axis.horizontal,
-                itemCount: 3
-            ),
+          ListView.separated(
+              itemBuilder: (c,i)=>itemBuilder(
+                text: titles[i],
+                isSelected: currentStatus == i ,
+                index: i
+              ),
+              shrinkWrap: true,
+              separatorBuilder: (c,i)=>const SizedBox(height: 20,),
+              itemCount: 3
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20,bottom: 10),
-            child: Text(
-              tr('status'),style:const TextStyle(fontSize: 16),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              itemBuilder(text: 'open',isSelected: currentStatus == 0,index: 0,isService: false),
-              const SizedBox(width: 10,),
-              itemBuilder(text: 'not_crowded',isSelected: currentStatus == 1,index: 1,isService: false),
-            ],
-          ),
-          const SizedBox(height: 30,),
+          const SizedBox(height: 15,),
           DefaultButton(
             text: tr('apply'),
             onTap: (){
@@ -79,13 +60,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   required String text,
   required bool isSelected,
   required int index,
-   bool isService = true,
 }){
     return InkWell(
       overlayColor: MaterialStateProperty.all(Colors.transparent),
       onTap: (){
         setState(() {
-          isService? currentService = index:currentStatus = index;
+          currentStatus = index;
         });
       },
       child: Container(
@@ -96,6 +76,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
         ),
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             if(isSelected)
             Icon(Icons.check,color: defaultColor,),

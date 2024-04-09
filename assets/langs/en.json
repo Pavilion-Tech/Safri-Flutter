@@ -248,5 +248,9 @@
   "you_need_to_have_a": "You need to have a",
   "order_to_have_a": "order to have a",
   "pay_now": "Pay Now",
-  "previous_orders": "Previous Orders"
+  "previous_orders": "Previous Orders",
+  "choose_branch": "Choose Branch",
+  "filters": "Filters",
+  "opened": "Opened",
+  "nearest": "Nearest"
 }

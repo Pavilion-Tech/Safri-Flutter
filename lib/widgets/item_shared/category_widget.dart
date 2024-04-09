@@ -14,10 +14,16 @@ import '../../modules/home/cubits/home_category_cubit/home_category_cubit.dart';
 import 'image_net.dart';
 
 class CategoryWidget extends StatefulWidget {
-  CategoryWidget({this.data, this.isRestaurant = false, this.isSearch = false,this.itemScrollController });
+  CategoryWidget({this.data,
+    this.isRestaurant = false,
+    this.isSearch = false,
+    this.itemScrollController,
+    this.categoryScrollController
+  });
 
   final List<CategoryData>? data;
   ItemScrollController? itemScrollController;
+  ItemScrollController? categoryScrollController;
   final bool isRestaurant;
   final bool isSearch;
 
@@ -93,7 +99,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     ),
                     SizedBox(
                       height: 90,
-                      child: ListView.separated(
+                      child: ScrollablePositionedList.separated(
                           itemBuilder: (context,index)=>categoryItem(
                               widget.data![index],
                               !widget.isRestaurant&&!widget.isSearch
@@ -101,7 +107,8 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                                   :index,context
                           ),
                           shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
+                          itemScrollController: widget.categoryScrollController,
+                         // physics: const NeverScrollableScrollPhysics(),
                           separatorBuilder: (c,i)=>const SizedBox(width: 25,),
                           scrollDirection: Axis.horizontal,
                           itemCount: widget.data!.length

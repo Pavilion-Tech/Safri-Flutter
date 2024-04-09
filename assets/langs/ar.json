@@ -245,6 +245,9 @@
   "you_need_to_have_a": "يجب أن يكون لديك",
   "order_to_have_a": "من أجل الحصول على",
   "pay_now": "ادفع الآن",
-  "previous_orders": "الطلبات السابقة"
-
+  "previous_orders": "الطلبات السابقة",
+  "choose_branch": "اختر الفرع",
+  "filters": "التصفيات",
+  "opened": "مفتوح",
+  "nearest": "الأقرب"
 }

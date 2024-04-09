@@ -58,7 +58,7 @@ class AdDialog extends StatelessWidget {
                   // }
 
                 },
-            child: ImageNet(image: ad.backgroundImage??'',fit: null,width: null,height: null,haveLoading: false,)),
+            child: ImageNet(image: ad.backgroundImage??'',width: null,height: null,haveLoading: false,fit: null)),
             Positioned(
               top: 4,right: 6,
               child: IconButton(

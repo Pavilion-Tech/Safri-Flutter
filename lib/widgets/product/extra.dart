@@ -48,6 +48,10 @@ class _ExtraWidgetState extends State<ExtraWidget> {
   Widget listItem({required Extra model,required int index} ) {
     return  model.name!= ''? GestureDetector(
       onTap: (){
+        if(model.isMulti != 'multi'){
+          widget.extraId.clear();
+          indexes.clear();
+        }
         setState(() {
           if(indexes.any((element) => index == element)){
             indexes.remove(index);

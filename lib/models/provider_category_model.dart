@@ -62,6 +62,7 @@ class ProviderData {
   String? whatsappNumber;
   String? phoneNumber;
   String? personalPhoto;
+  String? coverPhoto;
   String? currentLanguage;
   String? totalRate;
   int? totalRateNumber;
@@ -116,6 +117,7 @@ class ProviderData {
     totalRateNumber = json['total_rate_number'];
     totalRateCount = json['total_rate_count'];
     crowdedStatus = json['crowded_status'];
+    coverPhoto = json['cover_photo'];
     status = json['status'];
     if (json['child_categories_modified'] != null) {
       childCategoriesModified = <CategoryData>[];

@@ -67,6 +67,7 @@ class CheckoutScreen extends StatelessWidget {
         },
         builder: (context, state) {
           var cubit = FastCubit.get(context);
+          print(cubit.cartModel?.data?.invoiceSummary?.totalPrice);
           return InkWell(
             onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
             overlayColor: MaterialStateProperty.all(Colors.transparent),

@@ -14,6 +14,7 @@ import '../../shared/components/components.dart';
 import '../../shared/components/constant.dart';
 import '../../shared/styles/colors.dart';
 import '../../widgets/home/ad_dialog.dart';
+import '../../widgets/home/filter_bottom_sheet.dart';
 import '../../widgets/item_shared/category_widget.dart';
 import '../../widgets/item_shared/provider_item.dart';
 import '../../widgets/shimmer/default_list_shimmer.dart';
@@ -192,6 +193,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
               const Spacer(),
+              // InkWell(
+              //   onTap: () {
+              //     showModalBottomSheet(context: context, builder: (context)=>FilterBottomSheet());
+              //   },
+              //   child: Image.asset(
+              //     Images.filter,
+              //     width: 26,
+              //     color: Colors.black,
+              //   ),
+              // ),
+              // const SizedBox(width: 10,),
               InkWell(
                 onTap: () {
                   navigateTo(context, SearchScreen());

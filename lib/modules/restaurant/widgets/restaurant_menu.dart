@@ -33,6 +33,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
   List<Key> key=[];
 
   ItemScrollController scrollController = ItemScrollController();
+  ItemScrollController categoryScrollController = ItemScrollController();
   ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
   bool isFirst = true;
   @override
@@ -49,19 +50,17 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
         if(_index4.length ==1){
           HomeCategoryCubit.get(context).currentIndex = int.parse(_index4);
           HomeCategoryCubit.get(context).emitState();
-          //setState(() {});
+          categoryScrollController.jumpTo(
+            index: HomeCategoryCubit.get(context).currentIndex,);
         }else{
-          // print(_index4.toString().characters.first);
-          // print(_index4.toString().characters);
-          // print(_index4.toString().characters.last);
           if(HomeCategoryCubit.get(context).currentIndex != _index4.toString().characters.first){
             HomeCategoryCubit.get(context).currentIndex = int.parse(_index4.toString().characters.first);
             HomeCategoryCubit.get(context).emitState();
-            //setState(() {});
+            categoryScrollController.jumpTo(
+              index: HomeCategoryCubit.get(context).currentIndex,);
           }
         }
       }
-
     });
     isFirst = false;
     HomeCategoryCubit.get(context).currentIndex=0;
@@ -106,6 +105,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                   child: CategoryWidget(
                       data: widget.cubit.singleProviderModel?.data?.childCategoriesModified,
                       isRestaurant: true,
+                      categoryScrollController: categoryScrollController,
                       itemScrollController: scrollController,
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -224,7 +225,7 @@ class ListGiftDialog extends StatelessWidget {
       },
       child: Row(
         children: [
-          //if(gift.image!=null)
+          if(gift.image!=null)
           Container(
             width: size!.width*.15,
             height: size!.width*.15,
@@ -236,13 +237,14 @@ class ListGiftDialog extends StatelessWidget {
             child: ImageNet(image:gift.image??"",),
           ),
           const SizedBox(width: 10,),
-          Text(
-            '${gift.title} ${gift.type == 'wallets_price'?'KWD':''}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+          Expanded(
+            child: AutoSizeText(
+              '${gift.title} ${gift.type == 'wallets_price'?'KWD':''}',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+            ),
           ),
-          Spacer(),
           CircleAvatar(
             backgroundColor: Colors.grey.shade300,
             radius: 12,

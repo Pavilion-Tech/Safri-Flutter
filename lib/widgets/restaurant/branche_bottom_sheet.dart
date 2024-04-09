@@ -42,22 +42,26 @@ class BrancheBottomSheet extends StatelessWidget {
                   Future.delayed(Duration.zero,(){
                     cubit.paginationProviderBranches();
                   });
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ListView.separated(
-                        itemBuilder: (c, i) => ProviderItem(
-                            providerData:cubit.providerBranchesModel!.data!.data![i],
-                            isBranch: true),
-                        separatorBuilder: (c, i) => const SizedBox(height: 20,),
-                        shrinkWrap: true,
-                        controller: cubit.providerBranchesScrollController,
-                        itemCount: cubit.providerBranchesModel!.data!.data!.length,
-                        padding: EdgeInsets.all(20),
-                      ),
-                      if(state is ProviderBranchesLoadingState)
-                        CupertinoActivityIndicator()
-                    ],
+                  return Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (c, i) => ProviderItem(
+                                providerData:cubit.providerBranchesModel!.data!.data![i],
+                                isBranch: true),
+                            separatorBuilder: (c, i) => const SizedBox(height: 20,),
+                            shrinkWrap: true,
+                            controller: cubit.providerBranchesScrollController,
+                            itemCount: cubit.providerBranchesModel!.data!.data!.length,
+                            padding: EdgeInsets.all(20),
+                          ),
+                        ),
+                        if(state is ProviderBranchesLoadingState)
+                          CupertinoActivityIndicator()
+                      ],
+                    ),
                   );
                 }
               ),

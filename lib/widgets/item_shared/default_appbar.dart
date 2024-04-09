@@ -44,7 +44,6 @@ class DefaultAppBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 IconButton(onPressed: (){
                   if(isOrderHistory){
                     FastCubit.get(context).changeIndex(2);
@@ -57,7 +56,17 @@ class DefaultAppBar extends StatelessWidget {
                     Navigator.pop(context);
                   }
 
-                }, icon: Icon(Icons.arrow_back_ios_outlined,color: defaultColor,)),
+                }, icon: Container(
+                  margin: EdgeInsets.all(5),
+                  height: 40,width: 40,
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.6),
+                      borderRadius: BorderRadius.circular(8)
+                  ),
+                  child: Center(
+                    child: Icon(Icons.arrow_back_ios_outlined,color:defaultColor,),
+                  ),
+                )),
                 AutoSizeText(
                   title,
                   minFontSize: 8,

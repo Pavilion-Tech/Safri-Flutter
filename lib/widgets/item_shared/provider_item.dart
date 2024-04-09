@@ -133,7 +133,9 @@ class ProviderItem extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                                 minFontSize: 5,
                               style: TextStyle(fontSize: 10,color: Colors.grey),
-                              ), AutoSizeText(
+                              ),
+                        if(providerData?.openStatus == 'open')
+                        AutoSizeText(
                                providerData?.crowdedStatus ==1 ?tr('crowded'):tr('not_crowded'),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

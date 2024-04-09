@@ -18,6 +18,7 @@ class Invoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(total);
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -83,8 +84,7 @@ class Invoice extends StatelessWidget {
                   Text(
                     '${totalMinusDelivery()} ${tr("KWD")}',
                     style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
-                  )
-                  ,
+                  ),
                 if( isOrderDetails==true)
                   Text(
                     '${total??""} ${tr("KWD")}',

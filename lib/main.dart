@@ -61,21 +61,16 @@ void main()async {
         ?myLocale = 'ar'
         :myLocale = 'en';
   }
-
-  BlocOverrides.runZoned(
-        () {
-      runApp(
-        EasyLocalization(
-          supportedLocales: const [Locale('en'), Locale('ar')],
-          useOnlyLangCode: true,
-          path: 'assets/langs',
-          fallbackLocale: const Locale('en'),
-          startLocale: Locale(myLocale),
-          child: const MyApp(),
-        ),
-      );
-    },
-    blocObserver: MyBlocObserver(),
+  Bloc.observer = MyBlocObserver();
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      useOnlyLangCode: true,
+      path: 'assets/langs',
+      fallbackLocale: const Locale('en'),
+      startLocale: Locale(myLocale),
+      child: const MyApp(),
+    ),
   );
 }
 
