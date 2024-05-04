@@ -85,6 +85,7 @@ class AddressCubit extends Cubit<AddressState>  {
 
           emit(AddOrUpdateAddressSuccessState());
           getAddresses();
+          Navigator.pop(context);
 
         }
 

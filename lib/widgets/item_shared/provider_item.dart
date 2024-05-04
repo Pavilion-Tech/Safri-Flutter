@@ -120,20 +120,20 @@ class ProviderItem extends StatelessWidget {
                           minFontSize: 5,
                           style: TextStyle(fontSize: 10,color: Colors.grey),
                         ),
-                      if(providerData!.duration!=null)
-                        SizedBox(width: size!.width*.01,),
-                      if(providerData!.duration!=null)
-                        Image.asset(Images.timer,width: 14,height: 14,),
-                      const SizedBox(width: 5,),
+                      // if(providerData!.duration!=null)
+                      //   SizedBox(width: size!.width*.01,),
+                      // if(providerData!.duration!=null)
+                      //   Image.asset(Images.timer,width: 14,height: 14,),
+                      //const SizedBox(width: 5,),
                       Row(
                       children: [
-                              AutoSizeText(
-                               '${providerData!.duration??''} | ',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                minFontSize: 5,
-                              style: TextStyle(fontSize: 10,color: Colors.grey),
-                              ),
+                              // AutoSizeText(
+                              //  '${providerData!.duration??''} | ',
+                              //   maxLines: 1,
+                              //   overflow: TextOverflow.ellipsis,
+                              //   minFontSize: 5,
+                              // style: TextStyle(fontSize: 10,color: Colors.grey),
+                              // ),
                         if(providerData?.openStatus == 'open')
                         AutoSizeText(
                                providerData?.crowdedStatus ==1 ?tr('crowded'):tr('not_crowded'),

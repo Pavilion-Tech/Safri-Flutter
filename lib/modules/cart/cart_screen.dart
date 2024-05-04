@@ -54,7 +54,7 @@ class _CartScreenState extends State<CartScreen> {
                   condition: cubit.cartModel!=null,
                   fallback: (c)=>CartShimmer(),
                   builder: (c)=> ConditionalBuilder(
-                    condition: cubit.cartModel?.data?.cart?.isNotEmpty??true,
+                    condition: cubit.cartModel?.data?.cart?.isNotEmpty??false,
                     fallback: (c)=>NoCarts(),
                     builder: (c){
                       Future.delayed(Duration.zero,(){
@@ -88,7 +88,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         if(token !=null)
         ConditionalBuilder(
-          condition: cubit.cartModel!=null,
+          condition: cubit.cartModel!=null &&cubit.cartModel!.data!.cart!.isNotEmpty,
           fallback: (c)=>const SizedBox(),
           builder: (c)=> ConditionalBuilder(
             condition: cubit.cartModel?.data?.cart?.isNotEmpty??true,

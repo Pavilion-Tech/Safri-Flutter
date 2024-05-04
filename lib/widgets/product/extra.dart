@@ -72,13 +72,20 @@ class _ExtraWidgetState extends State<ExtraWidget> {
           children: [
             Center(
               child: Container(
-                width: 14,
-                height: 14,
+                width: 22,
+                height: 22,
                 decoration: BoxDecoration(
-                    color:indexes.any((element) => index == element) ? defaultColor:  Color(0xffCACACA),
-
-                    shape: BoxShape.circle),
-
+                    color: Colors.transparent,
+                    border: Border.all(
+                      color: indexes.any((element) => index == element)? defaultColor: Color(0xff6E6E6E), // Set the border color here
+                      width: 1, // Set the border width here
+                    ),
+                ),
+                child: Center(
+                  child: Container(
+                    child: Icon(Icons.check,size: 16,color:indexes.any((element) => index == element)? defaultColor:Colors.transparent,),),
+                )
+                ,
               ),
             ),
             const SizedBox(

@@ -22,7 +22,7 @@ class ImageScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20.0),
         child: InteractiveViewer(
           child: Center(
-            child: ImageNet(image: image, ),
+            child: ImageNet(image: image, fit: null,),
           ),
         ),
       ),

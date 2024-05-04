@@ -82,7 +82,7 @@ class Invoice extends StatelessWidget {
                 ),
                 if(selectServiceType!=3&&isOrderDetails==false)
                   Text(
-                    '${totalMinusDelivery()} ${tr("KWD")}',
+                    '${subtotal} ${tr("KWD")}',
                     style:TextStyle(fontWeight: FontWeight.w600,fontSize: 19,color: defaultColor),
                   ),
                 if( isOrderDetails==true)

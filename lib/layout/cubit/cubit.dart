@@ -350,7 +350,7 @@ class FastCubit extends Cubit<FastStates>{
       print("add to cart");
       print(value.data);
       if(value.data['status']==true){
-
+        cartModel = null;
          // showToast(msg: value.data['message']);
          showDialog(
              context: context,
@@ -656,6 +656,7 @@ class FastCubit extends Cubit<FastStates>{
       if(value.data['status']==true){
         showToast(msg: value.data['message']);
         emit(DeleteAllCartSuccessState());
+        cartModel = null;
           addToCart(
             context: navigatorKey.currentContext!,
             quantity: quantity,

@@ -42,11 +42,11 @@ class _SelectServiceTypeState extends State<SelectServiceType> {
                 title: 'pick_up',
                 index: 2
             ),
-            itemBuilder(
-                image: Images.dineIn,
-                title: 'dine_in',
-                index: 3
-            ),
+            // itemBuilder(
+            //     image: Images.dineIn,
+            //     title: 'dine_in',
+            //     index: 3
+            // ),
           ],
         ),
       ],
