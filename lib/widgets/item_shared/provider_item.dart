@@ -136,7 +136,7 @@ class ProviderItem extends StatelessWidget {
                               // ),
                         if(providerData?.openStatus == 'open')
                         AutoSizeText(
-                               providerData?.crowdedStatus ==1 ?tr('crowded'):tr('not_crowded'),
+                               providerData?.crowdedStatus ==1 ?tr('not_crowded'):tr('crowded'),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           minFontSize: 5,
