@@ -9,7 +9,7 @@ class DioHelper {
   static void init() {
     dio = Dio(
       BaseOptions(
-        baseUrl: 'https://on-fast-api.ai2digital.com/',
+        baseUrl: 'https://api.safriapp.com/',
         connectTimeout: const Duration(seconds:  60),
         receiveTimeout: const Duration(seconds:  60),
         sendTimeout: const Duration(seconds:  60),

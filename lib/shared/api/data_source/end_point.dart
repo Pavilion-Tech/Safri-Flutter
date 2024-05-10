@@ -1,7 +1,7 @@
 
 class EndPoints {
 
-  static const String baseUrl = 'https://on-fast-api.ai2digital.com/';
+  static const String baseUrl = 'https://api.safriapp.com/';
 
   static const updateAddress = "address/update-address/";
   static const setDefaultAddress = "address//set-default-address/";
