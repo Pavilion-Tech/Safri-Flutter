@@ -14,7 +14,7 @@ class WalletBalance extends StatelessWidget {
       child: Row(
         children: [
           Text(
-            'use_wallet_balance'.tr() + '(${MenuCubit.get(context).userModel?.data?.wallet??'0'} KWD)',
+            'use_wallet_balance'.tr() + '(${MenuCubit.get(context).userModel?.data?.wallet.toString().padRight(5,'0')??'0'} KWD)',
             style: TextStyle(fontSize: 14.4,fontWeight: FontWeight.w600),
           ),
           const Spacer(),

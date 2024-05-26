@@ -24,7 +24,7 @@ class WalletWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AutoSizeText(
-              "${tr('${MenuCubit.get(context).userModel?.data?.wallet??''}')}",
+              "${tr('${MenuCubit.get(context).userModel?.data?.wallet.toString().padRight(5,'0')??''}')}",
               minFontSize: 8,
               maxLines: 1,
               style: TextStyle(color: defaultColor,fontWeight: FontWeight.w600,fontSize: 35),

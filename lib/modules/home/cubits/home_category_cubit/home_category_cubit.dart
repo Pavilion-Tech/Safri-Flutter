@@ -150,6 +150,8 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   ProviderCategoryModel? providerCategoryModel;
   void getProviderCategory({int page = 1}){
     String url;
+    //url = '$providerCategoryUrl$categoryId?user_latitude=25.2083126&user_logitude=55.8919013&page=$page';
+
     if(position!=null){
       url = '$providerCategoryUrl$categoryId?user_latitude=${position!.latitude}&user_logitude=${position!.longitude}&page=$page';
     }else{
@@ -253,17 +255,19 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     });
   }
 
-  ProviderCategoryModel? allProviderModel;
+  AllProvidersModel? allProviderModel;
 
   ScrollController allProviderScrollController = ScrollController();
 
 
-  void getAllProvider({int page = 1}){
+  void getAllProvider(){
     String url;
+    //url = '$allProviderUrl&current_latitude=29.3117&current_longitude=47.4818';
+
     if(position!=null){
-      url = '$allProviderUrl$page&user_latitude=${position!.latitude}&user_logitude=${position!.longitude}';
+      url = '$allProviderUrl&current_latitude=${position!.latitude}&current_longitude=${position!.longitude}';
     }else{
-      url = '$allProviderUrl$page';
+      url = '$allProviderUrl';
     }
     print(url);
     emit(ProviderCategoryLoadingState());
@@ -271,20 +275,15 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
         url: url,
         token: 'Bearer $token'
     ).then((value) {
+      print(value.data);
       if(value.data['status']==true&&value.data['data']!=null){
-        if(page == 1) {
-          allProviderModel = ProviderCategoryModel.fromJson(value.data);
-        }
-        else{
-          allProviderModel!.data!.currentPage = value.data['data']['currentPage'];
-          allProviderModel!.data!.pages = value.data['data']['pages'];
-          value.data['data']['data'].forEach((e){
-            allProviderModel!.data!.data!.add(ProviderData.fromJson(e));
-          });
-        }
+        allProviderModel = AllProvidersModel.fromJson(value.data);
         emit(ProviderCategorySuccessState());
       }else if(value.data['status']==false&&value.data['data']!=null){
         showToast(msg: tr('wrong'));
+        emit(ProviderCategoryWrongState());
+      }else{
+        showToast(msg: value.data['message']??'wrong'.tr(),toastState: false);
         emit(ProviderCategoryWrongState());
       }
     }).catchError((e){
@@ -294,19 +293,19 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
     });
   }
 
-  void paginationAllProvider(){
-    print("allliiiiii");
-    allProviderScrollController.addListener(() {
-      if (allProviderScrollController.offset == allProviderScrollController.position.maxScrollExtent){
-        if (allProviderModel!.data!.currentPage != allProviderModel!.data!.pages) {
-          if(state is! ProviderCategoryLoadingState){
-            int currentPage = allProviderModel!.data!.currentPage! +1;
-            getAllProvider(page: currentPage);
-          }
-        }
-      }
-    });
-  }
+  // void paginationAllProvider(){
+  //   print("allliiiiii");
+  //   allProviderScrollController.addListener(() {
+  //     if (allProviderScrollController.offset == allProviderScrollController.position.maxScrollExtent){
+  //       if (allProviderModel!.data!.currentPage != allProviderModel!.data!.pages) {
+  //         if(state is! ProviderCategoryLoadingState){
+  //           int currentPage = allProviderModel!.data!.currentPage! +1;
+  //           getAllProvider(page: currentPage);
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
   void emitState()=>emit(EmitState());
 }

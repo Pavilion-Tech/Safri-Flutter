@@ -105,14 +105,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (cubit.providerCategoryModel==null && state is ProviderCategoryLoadingState)
                         DefaultListShimmer(),
                         if (cubit.providerCategoryModel!=null &&cubit.providerCategoryModel?.data?.data?.length ==0
-                        ||cubit.allProviderModel!=null &&cubit.allProviderModel?.data?.data?.length ==0
+                        ||cubit.allProviderModel!=null &&cubit.allProviderModel?.data?.length ==0
                             && state is ProviderCategorySuccessState)
                         Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
                           maxLines: 1,)),
                         if (state is ProviderCategoryErrorState)
                         Center(child: AutoSizeText(tr('no_restaurant'), minFontSize: 8,
                           maxLines: 1,)),
-                      if (cubit.providerCategoryModel?.data?.data?.isNotEmpty??true )
+                      if (cubit.providerCategoryModel?.data?.data?.isNotEmpty??false)
                         Column(
                           children: [
                             // if (state is ProviderCategoryLoadingState) Center(child: CupertinoActivityIndicator()),
@@ -130,25 +130,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
 
-                      if (cubit.allProviderModel?.data?.data?.isNotEmpty??true )
+                      if (cubit.allProviderModel?.data?.isNotEmpty??false)
                         Builder(
                           builder: (context) {
-                            cubit.paginationAllProvider();
+                           // cubit.paginationAllProvider();
                             return Stack(
                               alignment: AlignmentDirectional.bottomCenter,
                               children: [
                                 ListView.separated(
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder: (c, i) => ProviderItem(providerData: cubit.allProviderModel!.data!.data![i]),
+                                  itemBuilder: (c, i) => ProviderItem(providerData: cubit.allProviderModel!.data![i]),
                                   separatorBuilder: (c, i) => const SizedBox(
                                     height: 20,
                                   ),
-                                  itemCount: cubit.allProviderModel?.data?.data?.length??0,
+                                  itemCount: cubit.allProviderModel?.data?.length??0,
                                   padding: const EdgeInsets.only(left: 20,right: 20,bottom: 30),
                                 ),
                                 if (state is ProviderCategoryLoadingState) Center(child: CupertinoActivityIndicator()),
-
                               ],
                             );
                           }

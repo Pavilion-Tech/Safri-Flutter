@@ -139,7 +139,7 @@ class _RestaurantMenuState extends State<RestaurantMenu> {
                                     ListView.separated(
                                       itemBuilder: (c,i)=>Product(
                                           widget.cubit.productsModel[index].data?.data?[i],
-                                          widget.cubit.singleProviderModel?.data?.openStatus == 'closed'?true:false
+                                          widget.cubit.singleProviderModel?.data?.openStatus == 'open'?true:false
                                       ),
                                       separatorBuilder: (c,i)=>const SizedBox(height: 20,),
                                       itemCount: widget.cubit.productsModel[index].data?.data?.length??0,

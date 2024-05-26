@@ -9,17 +9,17 @@ import '../../shared/images/images.dart';
 import '../item_shared/image_net.dart';
 
 class Product extends StatelessWidget {
-  Product(this.productData,this.isClosed);
+  Product(this.productData,this.isOpen);
 
   ProductData? productData;
 
-  bool isClosed;
+  bool isOpen;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        navigateTo(context, ProductScreen(productData: productData,isClosed:  isClosed));
+        navigateTo(context, ProductScreen(productData: productData,isOpen:  isOpen));
       },
       child: Container(
         width: double.infinity,

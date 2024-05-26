@@ -26,10 +26,13 @@ import 'cubit/product_cubit/product_state.dart';
 
 class ProductScreen extends StatefulWidget {
 
-  ProductScreen({this.productData, this.isClosed, this.id});
+  ProductScreen({
+    this.productData,
+    this.isOpen,
+    this.id});
 
     ProductData? productData;
-   bool? isClosed;
+    bool? isOpen;
  final String? id;
 
   @override
@@ -64,29 +67,32 @@ class _ProductScreenState extends State<ProductScreen> {
   }
   @override
   Widget build(BuildContext context) {
-
-
-
     return BlocConsumer<FastCubit, FastStates>(
-  listener: (context, state) {
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+          body: Column(
+            children: [
 
-  },
-  builder: (context, state) {
-    return Scaffold(
-      body: Column(
-        children: [
-          DefaultAppBar(''),
-          BlocConsumer<ProductCubit, ProductState>(
-            listener: (context, state) {
+              DefaultAppBar(''),
 
-            },
-            builder: (context, state) {
-              var addressesCubit = ProductCubit.get(context);
-              if ( state is ProductLoadState) {
-                return const NotificationShimmer();
-                // return Center(child: UTI.loadingWidget(),);
-              }
-              if (addressesCubit.productDetails==null&& state is ProductSuccessState) {
+              BlocConsumer<ProductCubit, ProductState>(
+
+                listener: (context, state) {},
+
+                builder: (context, state) {
+
+                  var addressesCubit = ProductCubit.get(context);
+
+                  if ( state is ProductLoadState) {
+
+                    return const NotificationShimmer();
+
+                    // return Center(child: UTI.loadingWidget(),);
+
+                  }
+
+                  if (addressesCubit.productDetails==null&& state is ProductSuccessState) {
                 return UTI.dataEmptyWidget(noData:  tr("noDataFounded"), imageName: Images.productNotFound);
               }
               if (state is ProductErrorState) {
@@ -116,6 +122,7 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget body(  BuildContext context,{required ProductData productData}) {
+    print(productData.providerId?.opeingStatus);
     return Column(
                   children: [
                     Padding(
@@ -194,7 +201,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         ],
                       ),
                     ),
-                    if(productData.providerId?.opeingStatus!= 'closed')
+                    if(widget.isOpen??false||productData.providerId?.opeingStatus!= 'closed')
                     StatefulBuilder(
                       builder:(context,_setState)=> BlocConsumer<FastCubit, FastStates>(
                         listener: (context, state) {},
@@ -204,24 +211,14 @@ class _ProductScreenState extends State<ProductScreen> {
                             fallback: (c)=>Center(child: CupertinoActivityIndicator(),),
                             builder: (c)=>InkWell(
                               onTap: () {
-                                if( widget.isClosed??false){
-                                  showToast(msg: tr('restaurant_closed'));
-                                }else{
-                                  print('hi');
-                                  print(quantity);
-                                  print(productData.id??'');
-                                  print('selectSize.sizedId${selectSize.sizedId}');
-                                  print(extraWidget.extraId);
-                                  print(selectType.typeId);
-                                  FastCubit.get(context).addToCart(
-                                      context: context,
-                                      quantity: quantity,
-                                      productId: productData.id??'',
-                                      selectedSizeId: selectSize.sizedId??'',
-                                      extras: extraWidget.extraId,
-                                      typeId: selectType.typeId
-                                  );
-                                }
+                                FastCubit.get(context).addToCart(
+                                    context: context,
+                                    quantity: quantity,
+                                    productId: productData.id??'',
+                                    selectedSizeId: selectSize.sizedId??'',
+                                    extras: extraWidget.extraId,
+                                    typeId: selectType.typeId
+                                );
                               },
                               child: Container(
                                 height: 50,
@@ -249,7 +246,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     if(selectSize.sizedId!=null)
                                     Expanded(
                                       child: Text(
-                                        '${(quantity * (double.parse(selectSize.sizes[selectSize.sizes.indexWhere((element) => element.id==selectSize.sizedId)].priceAfterDiscount??'0'))).toString().padRight(5,'0')} KWD',
+                                        '${(quantity * (double.parse(selectSize.sizes[selectSize.sizes.indexWhere((element) => element.id==selectSize.sizedId)].priceAfterDiscount??'0'))).round().toString().padRight(5,'0')} KWD',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -322,8 +319,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                 ),
                               ),
                             ),
-
-
 
                           );
                         },

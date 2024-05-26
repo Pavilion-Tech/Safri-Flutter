@@ -55,7 +55,6 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                         //HomeCategoryCubit.get(context).categoryId='';
                         HomeCategoryCubit.get(context).providerCategoryModel=null;
                         HomeCategoryCubit.get(context).allProviderModel=null;
-                        HomeCategoryCubit.get(context).paginationAllProvider();
                         HomeCategoryCubit.get(context).getAllProvider();
                       },
                       overlayColor: MaterialStateProperty.all(Colors.transparent),

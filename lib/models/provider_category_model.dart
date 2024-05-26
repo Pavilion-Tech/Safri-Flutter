@@ -13,6 +13,23 @@ class ProviderCategoryModel {
 
 }
 
+class AllProvidersModel {
+  String? message;
+  bool? status;
+  List<ProviderData>? data;
+
+  AllProvidersModel({this.message, this.status, this.data});
+
+  AllProvidersModel.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    status = json['status'];
+    if (json['data'] != null) {
+      data = <ProviderData>[];
+      json['data'].forEach((v) { data!.add(new ProviderData.fromJson(v)); });
+    }
+  }
+}
+
 class ProviderBranchesModel {
   String? message;
   bool? status;

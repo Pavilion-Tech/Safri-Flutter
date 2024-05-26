@@ -120,8 +120,8 @@ class ProviderItem extends StatelessWidget {
                           minFontSize: 5,
                           style: TextStyle(fontSize: 10,color: Colors.grey),
                         ),
-                      // if(providerData!.duration!=null)
-                      //   SizedBox(width: size!.width*.01,),
+                      if(providerData!.distance!=null)
+                        SizedBox(width: size!.width*.01,),
                       // if(providerData!.duration!=null)
                       //   Image.asset(Images.timer,width: 14,height: 14,),
                       //const SizedBox(width: 5,),
