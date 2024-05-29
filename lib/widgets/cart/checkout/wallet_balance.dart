@@ -6,15 +6,30 @@ import 'package:safri/shared/styles/colors.dart';
 
 class WalletBalance extends StatelessWidget {
 
+  String price = '';
+  bool checkPriceLength(BuildContext context){
+    if(MenuCubit.get(context).userModel!.data!.wallet!.toString().length > 6)
+      return true;
+    return false;
+  }
+
+  void changePriceValue(BuildContext context){
+    price = MenuCubit.get(context).userModel?.data?.wallet?.toString().replaceRange(6, MenuCubit.get(context).userModel?.data?.wallet.toString().length, '')??'';
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    price = MenuCubit.get(context).userModel?.data?.wallet?.toString()??'';
+    if(checkPriceLength(context)){
+      changePriceValue(context);
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         children: [
           Text(
-            'use_wallet_balance'.tr() + '(${MenuCubit.get(context).userModel?.data?.wallet.toString().padRight(5,'0')??'0'} KWD)',
+            'use_wallet_balance'.tr() + '(${price} KWD)',
             style: TextStyle(fontSize: 14.4,fontWeight: FontWeight.w600),
           ),
           const Spacer(),

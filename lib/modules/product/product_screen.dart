@@ -246,7 +246,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                     if(selectSize.sizedId!=null)
                                     Expanded(
                                       child: Text(
-                                        '${(quantity * (double.parse(selectSize.sizes[selectSize.sizes.indexWhere((element) => element.id==selectSize.sizedId)].priceAfterDiscount??'0'))).round().toString().padRight(5,'0')} KWD',
+                                        '${((double.parse(selectSize.sizes[selectSize.sizes.indexWhere((element) => element.id==selectSize.sizedId)].priceAfterDiscount??'0')) * quantity).toString().padRight(5,'0')} KWD',
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(

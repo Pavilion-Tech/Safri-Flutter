@@ -150,13 +150,13 @@ class HomeCategoryCubit extends Cubit<HomeCategoryStates>{
   ProviderCategoryModel? providerCategoryModel;
   void getProviderCategory({int page = 1}){
     String url;
-    //url = '$providerCategoryUrl$categoryId?user_latitude=25.2083126&user_logitude=55.8919013&page=$page';
+    url = '$providerCategoryUrl$categoryId?user_latitude=25.2083126&user_logitude=55.8919013&page=$page';
 
-    if(position!=null){
-      url = '$providerCategoryUrl$categoryId?user_latitude=${position!.latitude}&user_logitude=${position!.longitude}&page=$page';
-    }else{
-      url = '$providerCategoryUrl$categoryId?page=$page';
-    }
+    // if(position!=null){
+    //   url = '$providerCategoryUrl$categoryId?user_latitude=${position!.latitude}&user_logitude=${position!.longitude}&page=$page';
+    // }else{
+    //   url = '$providerCategoryUrl$categoryId?page=$page';
+    // }
     print(url);
     emit(ProviderCategoryLoadingState());
     DioHelper.getData(

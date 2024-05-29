@@ -6,10 +6,26 @@ import '../../../modules/menu/cubit/menu_cubit.dart';
 import '../../../shared/styles/colors.dart';
 
 class WalletWidget extends StatelessWidget {
-  const WalletWidget({super.key});
+  WalletWidget({super.key});
+
+  String price = '';
+
+  bool checkPriceLength(BuildContext context){
+    if(MenuCubit.get(context).userModel!.data!.wallet!.toString().length > 6)
+      return true;
+    return false;
+  }
+
+  void changePriceValue(BuildContext context){
+    price = MenuCubit.get(context).userModel?.data?.wallet?.toString().replaceRange(6, MenuCubit.get(context).userModel?.data?.wallet.toString().length, '')??'';
+  }
 
   @override
   Widget build(BuildContext context) {
+    price = MenuCubit.get(context).userModel?.data?.wallet?.toString()??'';
+    if(checkPriceLength(context)){
+      changePriceValue(context);
+    }
     return Column(
       children: [
         SizedBox(height: 15,),
@@ -24,7 +40,7 @@ class WalletWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AutoSizeText(
-              "${tr('${MenuCubit.get(context).userModel?.data?.wallet.toString().padRight(5,'0')??''}')}",
+              "${tr(price)}",
               minFontSize: 8,
               maxLines: 1,
               style: TextStyle(color: defaultColor,fontWeight: FontWeight.w600,fontSize: 35),
