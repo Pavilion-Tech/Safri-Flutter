@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -424,6 +425,7 @@ class FastCubit extends Cubit<FastStates>{
       // }
 
     ).then((value) {
+      log(value.data.toString());
       if(value.data['status']==true&&value.data['data']!=null){
         // if(page == 1) {
           cartModel = CartModel.fromJson(value.data);

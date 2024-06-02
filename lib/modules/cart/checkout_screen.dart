@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:safri/layout/cubit/cubit.dart';
 import 'package:safri/layout/cubit/states.dart';
+import 'package:safri/models/cart_model.dart';
 import 'package:safri/modules/addresses/add_new_address_screen.dart';
 import 'package:safri/modules/addresses/widgets/addresses_list.dart';
 import 'package:safri/modules/menu/cubit/menu_cubit.dart';
@@ -37,7 +38,7 @@ class CheckoutScreen extends StatelessWidget {
   SelectServiceType selectServiceType = SelectServiceType();
   PickUp pickUp = PickUp();
   PickTime pickTime = PickTime();
-  PaymentMethod paymentMethod = PaymentMethod();
+  late PaymentMethod paymentMethod;
   late HaveDiscount haveDiscount;
 
   TextEditingController noteController = TextEditingController();
@@ -53,9 +54,17 @@ class CheckoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     haveDiscount = HaveDiscount(couponController);
+    paymentMethod = PaymentMethod(
+      allowedPaymentMethods: FastCubit.get(context).cartModel?.data?.allowedPaymentMethods??
+      'all',
+    );
     Future.delayed(Duration(seconds: 2),(){
       if(FastCubit.get(context).cartModel?.data?.gifts!=null){
-        showDialog(context: context, builder: (context)=>ListGiftDialog());
+        if(FastCubit.get(context).cartModel!.data!.gifts!.products!.isNotEmpty
+        ||FastCubit.get(context).cartModel!.data!.gifts!.coupouns!.isNotEmpty
+        ||FastCubit.get(context).cartModel!.data!.gifts!.walletsPrices!.isNotEmpty){
+          showDialog(context: context, builder: (context)=>ListGiftDialog());
+        }
       }
     });
     return Scaffold(

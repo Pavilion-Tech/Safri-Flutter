@@ -1,3 +1,4 @@
+
 class CartModel {
   String? message;
   bool? status;
@@ -17,6 +18,7 @@ class CartModel {
 class Data {
   List<Cart>? cart;
   InvoiceSummary? invoiceSummary;
+  String? allowedPaymentMethods;
   Gifts? gifts;
 
   Data({this.cart, this.invoiceSummary});
@@ -28,6 +30,7 @@ class Data {
         cart!.add(new Cart.fromJson(v));
       });
     }
+    allowedPaymentMethods = json['allowed_payment_methods'];
     gifts = json['gifts'] != null ? new Gifts.fromJson(json['gifts']) : null;
     invoiceSummary = json['invoice_summary'] != null
         ? new InvoiceSummary.fromJson(json['invoice_summary'])

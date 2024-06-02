@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:safri/models/cart_model.dart';
 import 'package:safri/shared/components/components.dart';
 import 'package:safri/shared/images/images.dart';
 import 'package:safri/shared/styles/colors.dart';
@@ -19,7 +20,9 @@ class PaymentMethodModel{
 }
 
 class PaymentMethod extends StatefulWidget {
-  PaymentMethod({Key? key}) : super(key: key);
+  PaymentMethod({required this.allowedPaymentMethods});
+
+  String allowedPaymentMethods;
 
    String method = 'online';
 
@@ -58,8 +61,14 @@ class _PaymentMethodState extends State<PaymentMethod> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
+              if(widget.allowedPaymentMethods == 'online'||
+                  widget.allowedPaymentMethods == 'all')
               itemBuilder(model[0],0),
+              if(widget.allowedPaymentMethods == 'online'||
+                  widget.allowedPaymentMethods == 'all')
               const SizedBox(height: 20,),
+              if(widget.allowedPaymentMethods == 'cash'||
+                  widget.allowedPaymentMethods == 'all')
               itemBuilder(model[1],1),
             ],
           ),

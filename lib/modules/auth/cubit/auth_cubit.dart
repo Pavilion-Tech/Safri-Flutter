@@ -50,7 +50,7 @@ class AuthCubit extends Cubit<AuthStates>{
         CacheHelper.saveData(key: 'id', value: id);
         code =  value.data['data']['code'];
         print(code);
-        showToast(msg:'${tr('code_is')} $code',gravity: ToastGravity.CENTER);
+        //showToast(msg:'${tr('code_is')} $code',gravity: ToastGravity.CENTER);
         if(context!=null)
         showModalBottomSheet(
             context: context,
