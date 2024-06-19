@@ -11,7 +11,7 @@ class WalletWidget extends StatelessWidget {
   String price = '';
 
   bool checkPriceLength(BuildContext context){
-    if(MenuCubit.get(context).userModel!.data!.wallet!.toString().length > 6)
+    if(MenuCubit.get(context).userModel?.data?.wallet!=null&&MenuCubit.get(context).userModel!.data!.wallet!.toString().length > 6)
       return true;
     return false;
   }
@@ -25,6 +25,11 @@ class WalletWidget extends StatelessWidget {
     price = MenuCubit.get(context).userModel?.data?.wallet?.toString()??'';
     if(checkPriceLength(context)){
       changePriceValue(context);
+    }
+    if(price.contains('.')){
+      if(price.split('.').length <3){
+        price = '$price'+'0';
+      }
     }
     return Column(
       children: [

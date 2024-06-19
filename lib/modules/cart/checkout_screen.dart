@@ -331,6 +331,7 @@ class CheckoutScreen extends StatelessWidget {
                                       date:
                                           '${pickTime.dateTime.month}-${pickTime.dateTime.day}-${pickTime.dateTime.year} ${pickTime.dateTime.hour}:${pickTime.dateTime.minute}:${pickTime.dateTime.second}',
                                       context: context,
+                                      waitedProviderId: cubit.cartModel?.data?.cart?[0].providerId??'',
                                       paymentMethod: paymentMethod.method,
                                       serviceType: getServiceTypeIndex(),
                                       couponCode: haveDiscount.controller.text.isNotEmpty ? haveDiscount.controller.text : null,
